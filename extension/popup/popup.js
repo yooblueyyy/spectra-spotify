@@ -7,10 +7,11 @@
 
   function render() {
     $("#master").checked = S.enabled;
-    $("#status").textContent = S.enabled ? "Active on open.spotify.com" : "Paused. Spotify looks stock.";
+    $("#status").textContent = S.enabled ? "Live on open.spotify.com" : "Paused, Spotify looks stock";
+    $("#head").classList.toggle("off", !S.enabled);
     const t = S.theme;
-    $("#theme-name").textContent = t ? t.name : "Spotify default";
-    $("#theme-sub").textContent = t ? (t.authors && t.authors[0] ? "by " + t.authors[0].name : "Theme") : "No theme applied";
+    $("#theme-name").textContent = t ? t.name : "Stock Spotify";
+    $("#theme-sub").textContent = t ? (t.authors && t.authors[0] ? "by " + t.authors[0].name : "Theme") : "No theme yet";
     if (t && t.preview) $("#art").src = t.preview; else $("#art").removeAttribute("src");
     const names = t ? Object.keys(t.schemes || {}) : [];
     $("#schemes-wrap").hidden = names.length < 2;
