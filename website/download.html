@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d0d10">
+  <title>Download Spectra</title>
+  <meta name="description" content="Get Spectra for Chrome, Edge, Firefox, Windows, macOS, Linux or Meta Quest.">
+  <link rel="icon" href="/img/logo-512.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="wordmark" href="/" aria-label="Spectra home">
+        <img src="/img/logo-512.png" alt="" width="30" height="30">
+        spectra
+      </a>
+      <nav>
+        <a href="/#how">How it works</a>
+        <a href="/#themes">Themes</a>
+        <a href="/extensions">Extensions</a>
+        <a href="/#faq">FAQ</a>
+        <a class="gh" href="https://github.com/yooblueyyy/spectra-spotify" target="_blank" rel="noopener" aria-label="Spectra on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.83-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"/></svg>GitHub</a>
+        <a class="btn small discord" href="https://discord.gg/spicetify" target="_blank" rel="noopener" aria-label="Join the Spectra Discord"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.3 4.4A19.6 19.6 0 0 0 15.4 3l-.6 1.3a18.2 18.2 0 0 0-5.6 0L8.6 3a19.5 19.5 0 0 0-4.9 1.5C.6 9.1-.3 13.6.1 18.1a19.8 19.8 0 0 0 6 3l1.3-2.1a12.8 12.8 0 0 1-2-1l.5-.4a14 14 0 0 0 12.2 0l.5.4c-.6.4-1.3.7-2 1l1.3 2.1a19.7 19.7 0 0 0 6-3c.5-5.2-.8-9.7-3.6-13.7ZM8 15.3c-1.2 0-2.2-1.1-2.2-2.4S6.8 10.5 8 10.5s2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm8 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></svg><span>Discord</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="dl-head">
+      <span class="label">Download</span>
+      <h1>Where do you listen?</h1>
+      <p class="muted" style="max-width:38em;margin:0">Pick the one you use most. You can install more than one; each keeps its own themes and settings.</p>
+    </div>
+
+    <div class="picker" role="group" aria-label="Choose a platform">
+      <button class="pick" data-p="chrome" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="3.6"/><path d="M12 8.4h8.9M8.9 13.8 4.4 6.1M15.1 13.8 10.6 21.5"/></svg>
+        <strong>Chrome or Edge</strong><span class="sub">Also Brave, Opera, Vivaldi. Themes the web player.</span>
+      </button>
+      <button class="pick" data-p="firefox" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20.5 9.5A9 9 0 1 1 6 4.6c-.2 1.3.3 2.2 1.1 2.7.5-1.6 1.7-2.9 3.4-3.4-.6 1.4-.2 2.6.9 3.1 1.5.6 3.2-.1 3.9-1.4 1.6 1 2.7 2.4 3.3 3.9.4-.6.5-1.5.4-2.3.6.6 1 1.4 1.5 2.3z"/><path d="M9 13.5a3 3 0 0 0 5.8 1"/></svg>
+        <strong>Firefox</strong><span class="sub">Signed add-on. Themes the web player.</span>
+      </button>
+      <button class="pick" data-p="windows" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="1.5"/><path d="M9 20.5h6M12 16.5v4"/></svg>
+        <strong>Windows app</strong><span class="sub">For the Spotify desktop app. Windows 10/11.</span>
+      </button>
+      <button class="pick" data-p="mac" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="4" width="19" height="12" rx="1.5"/><path d="M1.5 19.5h21"/></svg>
+        <strong>Mac app</strong><span class="sub">For the Spotify desktop app. macOS 12 Monterey or newer.</span>
+      </button>
+      <button class="pick" data-p="linux" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3M12.5 15H17"/></svg>
+        <strong>Linux app</strong><span class="sub">For the Spotify desktop app. AppImage or .deb.</span>
+      </button>
+      <button class="pick" data-p="quest" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3.5 9.5c0-1.7 1.3-3 3-3h11c1.7 0 3 1.3 3 3v4c0 1.7-1.3 3-3 3h-2.6l-1.6-2.2a1.6 1.6 0 0 0-2.6 0l-1.6 2.2H6.5c-1.7 0-3-1.3-3-3z"/><circle cx="8" cy="11.5" r="1.3"/><circle cx="16" cy="11.5" r="1.3"/></svg>
+        <strong>Meta Quest</strong><span class="sub">A standalone app for Quest 3 and 3S.</span>
+      </button>
+    </div>
+
+    <section class="panel" id="panel" aria-live="polite">
+      <p class="muted">Pick a platform above.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div>
+        <p><strong>Spectra</strong>, themes and extensions for Spotify.</p>
+        <p>Not affiliated with or endorsed by Spotify. Themes and extensions belong to their authors. Built on the work of the <a href="https://spicetify.app" rel="noopener">Spicetify</a> community. MIT licensed.</p>
+      </div>
+      <div class="cols">
+        <div><b>Spectra</b><a href="/download">Download</a><a href="/#themes">Themes</a><a href="/extensions">Extensions</a><a href="/#platforms">Platforms</a></div>
+        <div><b>Project</b><a href="https://github.com/yooblueyyy/spectra-spotify" target="_blank" rel="noopener">GitHub</a><a href="/#changelog">Changelog</a><a href="/#faq">FAQ</a><a href="https://github.com/yooblueyyy/spectra-spotify/blob/main/LICENSE" target="_blank" rel="noopener">License</a></div>
+        <div><b>Community</b><a href="https://discord.gg/spicetify" target="_blank" rel="noopener">Discord</a><a href="https://spicetify.app" target="_blank" rel="noopener">Spicetify</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/site.js"></script>
+  <script src="/js/download.js"></script>
+</body>
+</html>

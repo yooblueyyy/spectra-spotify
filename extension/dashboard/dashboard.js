@@ -32,10 +32,12 @@
   }
   const svg = (path) => { const t = document.createElement("template"); t.innerHTML = `<svg viewBox="0 0 24 24"><path d="${path}"/></svg>`; return t.content.firstChild; };
 
-  function toast(msg, isError) {
-    const t = h("div", { class: "toast" + (isError ? " error" : "") }, msg);
+  /** Short notice, bottom right. action = { label, onClick } adds a button such as "Undo". */
+  function toast(msg, isError, action) {
+    const t = h("div", { class: "toast" + (isError ? " error" : ""), role: isError ? "alert" : "status" }, h("span", {}, msg));
+    if (action) t.append(h("button", { onclick: () => { t.remove(); action.onClick(); } }, action.label));
     $("#toasts").append(t);
-    setTimeout(() => t.remove(), isError ? 6000 : 2600);
+    setTimeout(() => t.remove(), isError ? 6500 : action ? 6000 : 2600);
   }
 
   async function busy(btn, label, fn) {
@@ -154,8 +156,18 @@
   // ------------------------------------------------------------------ cards
   function initials(name) { return name.replace(/[^A-Za-z0-9 ]/g, "").split(/\s+/).map((w) => w[0]).join("").slice(0, 3).toUpperCase() || "?"; }
 
-  function mediaEl(item, onClick) {
-    const media = h("div", { class: "card-media", onclick: onClick, title: "Details" }, h("div", { class: "ph" }, initials(item.name || item.title || "?")));
+  /** Stand-in preview when there's no image: a tiny Spotify layout, tinted from the name so each one differs. */
+  function placeholder(name) {
+    let hue = 0;
+    for (const ch of String(name)) hue = (hue * 31 + ch.charCodeAt(0)) % 360;
+    const ph = h("div", { class: "ph", "aria-hidden": "true" },
+      h("i", { class: "ph-side" }), h("i", { class: "ph-main" }), h("i", { class: "ph-bar" }), h("b", {}, initials(String(name))));
+    ph.style.setProperty("--h", String(hue));
+    return ph;
+  }
+
+  function mediaEl(item, onClick, cls) {
+    const media = h("div", { class: cls || "card-media", onclick: onClick, title: "Details" }, placeholder(item.name || item.title || "?"));
     if (item.preview) {
       const img = h("img", { loading: "lazy", alt: "", referrerpolicy: "no-referrer" });
       img.addEventListener("load", () => { img.classList.add("loaded"); media.querySelector(".ph")?.remove(); });
@@ -166,23 +178,33 @@
     return media;
   }
 
+  const compact = (n) => (n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, "") + "k" : String(n));
+
   function authorLine(item) {
     const a = item.authors && item.authors[0];
     return h("div", { class: "card-meta" },
       a ? h("span", {}, "by ", a.name) : null,
-      item.stars ? h("span", {}, "★ ", String(item.stars)) : null,
+      item.stars ? h("span", { title: `${item.stars} stars on GitHub` }, "★ ", compact(item.stars)) : null,
       ...(item.tags || []).filter((t) => t !== "latest").slice(0, 2).map((t) => h("span", { class: "tag" + (/outdated|broken|archived/i.test(t) ? " warn" : "") }, t)));
   }
 
-  function skeletons(container, n) {
-    container.replaceChildren(...Array.from({ length: n }, () => h("div", { class: "skeleton" })));
+  /** Placeholders shaped like what's coming: preview tiles for grids, rows for lists. */
+  function skeletons(container, n, kind) {
+    const one = kind === "row"
+      ? () => h("div", { class: "skeleton row-skel" }, h("i"), h("div", {}, h("b"), h("s")))
+      : () => h("div", { class: "skeleton" }, h("i"), h("b"), h("s"));
+    container.replaceChildren(...Array.from({ length: n }, one));
   }
 
-  function errorBox(container, err, retry) {
-    const box = h("div", { class: "error-box" }, h("strong", {}, "Couldn't load this list. "), err.message || String(err), " ");
-    if (retry) box.append(h("button", { class: "btn ghost small", onclick: retry }, "Retry"));
+  function errorBox(container, err, retry, what) {
+    const msg = String(err && err.message || err);
+    const box = h("div", { class: "error-box" },
+      h("div", {}, h("strong", {}, `Couldn't load ${what || "this list"}.`), " ", /rate limit/i.test(msg) ? msg : `GitHub said: ${msg}`));
+    if (retry) box.append(h("button", { class: "btn ghost small", onclick: retry }, "Try again"));
     container.replaceChildren(box);
   }
+
+  const empty = (title, text) => h("div", { class: "empty" }, h("strong", {}, title), text || null);
 
   // ------------------------------------------------------------------ safe README rendering
   function renderReadme(md, base) {
@@ -283,38 +305,40 @@
     S.scheme = Object.keys(schemes)[0] || null;
     S.colorOverrides = {};
     await save();
-    toast(`${item.name} applied${scripts.length ? " · reload Spotify to start its scripts" : ""}`);
+    toast(`${item.name} is on${scripts.length ? ". Reload Spotify to start its scripts" : ""}`);
     renderThemes();
     renderColors();
   }
 
   async function removeTheme() {
-    const name = S.theme && S.theme.name;
+    const before = { theme: S.theme, scheme: S.scheme, colorOverrides: S.colorOverrides };
     S.theme = null; S.scheme = null; S.colorOverrides = {};
     await save();
-    toast(`${name || "Theme"} removed. Back to stock Spotify.`);
     renderThemes(); renderColors();
+    toast(`Back to stock Spotify`, false, {
+      label: "Undo",
+      onClick: async () => { Object.assign(S, before); await save(); renderThemes(); renderColors(); },
+    });
   }
 
   function themeCard(item) {
     const applied = S.theme && S.theme.id === item.key;
     const btn = h("button", { class: "btn " + (applied ? "ghost" : "primary") + " small" }, applied ? "Remove" : "Apply");
-    btn.onclick = (e) => { e.stopPropagation(); applied ? removeTheme() : busy(btn, "Applying", () => installTheme(item).catch((err) => toast(err.message, true))); };
+    btn.onclick = (e) => { e.stopPropagation(); applied ? removeTheme() : busy(btn, "Applying", () => installTheme(item).catch((err) => toast(`Couldn't apply ${item.name}: ${err.message}`, true))); };
     const details = () => {
       const b = h("button", { class: "btn primary" }, applied ? "Re-install" : "Apply theme");
-      b.onclick = () => busy(b, "Applying", () => installTheme(item).then(closeDrawer).catch((err) => toast(err.message, true)));
+      b.onclick = () => busy(b, "Applying", () => installTheme(item).then(closeDrawer).catch((err) => toast(`Couldn't apply ${item.name}: ${err.message}`, true)));
       showDetails(item, [b]);
     };
     const media = mediaEl(item, details);
-    if (applied) media.append(h("span", { class: "badge ok" }, "Applied"));
-    else if (item.featured) media.append(h("span", { class: "badge featured" }, "Featured"));
-    else if (item.official) media.append(h("span", { class: "badge" }, "Official"));
+    if (item.featured && !applied) media.append(h("span", { class: "badge featured" }, "Featured"));
+    else if (item.official && !applied) media.append(h("span", { class: "badge" }, "Official"));
     return h("div", { class: "card" + (applied ? " applied" : "") }, media,
       h("div", { class: "card-body" },
-        h("div", { class: "card-title" }, item.name),
+        h("div", { class: "card-title" }, h("span", {}, item.name), applied ? h("span", { class: "state live" }, "Applied") : null),
         authorLine(item),
         item.description && item.description !== item.name ? h("div", { class: "card-desc" }, item.description) : null,
-        h("div", { class: "card-actions" }, btn, h("button", { class: "btn ghost small", onclick: details }, "Details"))));
+        h("div", { class: "card-actions" }, btn, h("button", { class: "btn link small", onclick: details }, "Details"))));
   }
 
   function schemeSwatch(sc) {
@@ -322,31 +346,57 @@
     return h("span", { class: "sw" }, ...["main", "sidebar", "player", "text", "button"].map((k) => h("i", { style: { background: "#" + pal[k] } })));
   }
 
+  function timeAgo(ts) {
+    if (!ts) return "";
+    const d = (Date.now() - ts) / 1000;
+    if (d < 60) return "just now";
+    if (d < 3600) return Math.round(d / 60) + " min ago";
+    if (d < 86400) return Math.round(d / 3600) + " h ago";
+    const days = Math.round(d / 86400);
+    return days === 1 ? "yesterday" : days < 45 ? days + " days ago" : new Date(ts).toLocaleDateString();
+  }
+
+  /** What's on right now, at the top of Themes: the theme, its schemes, and the things you'd do next. */
   function renderCurrentTheme() {
     const box = $("#current-theme");
     if (!S.theme) {
-      box.replaceChildren(h("div", { class: "hero" },
-        h("div", { class: "card-media", style: { borderRadius: "10px" } }, h("div", { class: "ph" }, "Stock")),
-        h("div", {}, h("div", { class: "eyebrow" }, "Current theme"), h("h2", {}, "Spotify default"),
-          h("p", { class: "muted" }, "No theme applied yet. Pick one below and it shows up in Spotify instantly."))));
+      box.replaceChildren(h("div", { class: "now stock" },
+        h("div", { class: "now-art" }, placeholder("Stock")),
+        h("div", {},
+          h("div", { class: "label" }, "Now in Spotify"),
+          h("h2", {}, "Stock Spotify"),
+          h("div", { class: "by" }, "No theme yet. Pick one below and Spotify changes straight away."))));
       return;
     }
     const t = S.theme;
     const names = Object.keys(t.schemes || {});
-    box.replaceChildren(h("div", { class: "hero" },
-      t.preview ? h("img", { src: t.preview, alt: "", referrerpolicy: "no-referrer" }) : h("div", { class: "card-media", style: { borderRadius: "10px" } }, h("div", { class: "ph" }, initials(t.name))),
+    const tweaks = Object.keys(S.colorOverrides || {}).length;
+    box.replaceChildren(h("div", { class: "now" },
+      h("div", { class: "now-art" }, t.preview ? h("img", { src: t.preview, alt: `${t.name} preview`, referrerpolicy: "no-referrer" }) : placeholder(t.name)),
       h("div", {},
-        h("div", { class: "eyebrow" }, "Current theme"),
+        h("div", { class: "label" }, h("span", { class: "state " + (S.enabled ? "live" : "") }, S.enabled ? "On in Spotify" : "Paused"),
+          t.installedAt ? h("span", {}, "· applied " + timeAgo(t.installedAt)) : null),
         h("h2", {}, t.name),
-        t.authors && t.authors[0] ? h("div", { class: "muted" }, "by ", t.authors[0].name) : null,
-        names.length ? h("div", { class: "scheme-chips" }, ...names.map((n) => h("button", {
-          class: "chip" + ((S.scheme || names[0]) === n ? " on" : ""),
-          onclick: async () => { S.scheme = n; S.colorOverrides = {}; await save(); renderCurrentTheme(); renderColors(); },
-        }, schemeSwatch(t.schemes[n]), n))) : null,
-        h("div", { class: "hero-actions" },
-          h("button", { class: "btn ghost small", onclick: () => switchView("colors") }, "Tweak colors"),
-          h("button", { class: "btn ghost small", onclick: (e) => busy(e.currentTarget, "Updating", () => reinstallCurrentTheme()) }, "Update"),
-          h("button", { class: "btn danger small", onclick: removeTheme }, "Remove")))));
+        h("div", { class: "by" },
+          t.authors && t.authors[0] ? `by ${t.authors[0].name}` : "",
+          names.length ? ` · ${names.length} colour scheme${names.length > 1 ? "s" : ""}` : "",
+          tweaks ? ` · ${tweaks} colour tweak${tweaks > 1 ? "s" : ""}` : ""),
+        names.length > 1 ? (() => {
+          // A handful of schemes here (the current one always included); the full list lives in Colors.
+          const current = S.scheme || names[0];
+          const shown = names.slice(0, 8);
+          if (!shown.includes(current)) shown[7] = current;
+          return h("div", { class: "scheme-chips" }, ...shown.map((n) => h("button", {
+            class: "chip" + (current === n ? " on" : ""),
+            "aria-pressed": String(current === n),
+            onclick: async () => { S.scheme = n; S.colorOverrides = {}; await save(); renderCurrentTheme(); renderColors(); },
+          }, schemeSwatch(t.schemes[n]), n)),
+          names.length > shown.length ? h("button", { class: "btn link small", onclick: () => switchView("colors") }, `+${names.length - shown.length} more`) : null);
+        })() : null),
+      h("div", { class: "now-actions" },
+        h("button", { class: "btn ghost small", onclick: () => switchView("colors") }, "Edit colours"),
+        t.source ? h("button", { class: "btn link small", title: "Download the latest version of this theme", onclick: (e) => busy(e.currentTarget, "Updating", () => reinstallCurrentTheme()) }, "Check for update") : null,
+        h("button", { class: "btn link small", onclick: removeTheme }, "Remove"))));
   }
 
   async function reinstallCurrentTheme() {
@@ -371,17 +421,18 @@
     const q = $("#theme-search").value;
     const off = filterItems(themeList.official, q);
     const com = filterItems(themeList.community, q);
-    if (themeList.official.length) $("#official-themes").replaceChildren(...(off.length ? off.map(themeCard) : [h("div", { class: "empty" }, "No official themes match.")]));
-    if (themeList.community.length || themeList.page) $("#community-themes").replaceChildren(...(com.length ? com.map(themeCard) : [h("div", { class: "empty" }, themeList.loading ? "Loading…" : "No community themes match.")]));
-    $("#official-count").textContent = themeList.official.length ? `${themeList.official.length} themes` : "";
-    $("#community-count").textContent = themeList.community.length ? `${themeList.community.length} loaded` : "";
+    if (themeList.official.length) $("#official-themes").replaceChildren(...(off.length ? off.map(themeCard) : [empty(`No official theme matches “${q.trim()}”.`)]));
+    if (themeList.community.length || themeList.page) $("#community-themes").replaceChildren(...(com.length ? com.map(themeCard)
+      : [themeList.loading ? empty("Loading community themes…") : empty(`Nothing in the community themes matches “${q.trim()}” yet.`, themeList.page * 30 < themeList.total ? "Load more below to search further." : "Try a theme or author name.")]));
+    $("#official-count").textContent = themeList.official.length ? `${themeList.official.length} from spicetify-themes` : "";
+    $("#community-count").textContent = themeList.community.length ? `${themeList.community.length} of ${themeList.total || "…"}, most starred first` : "";
     $("#more-themes").hidden = !themeList.page || themeList.page * 30 >= themeList.total;
   }
 
   async function loadOfficialThemes() {
     skeletons($("#official-themes"), 6);
     try { themeList.official = await officialThemes(); renderThemes(); }
-    catch (e) { errorBox($("#official-themes"), e, loadOfficialThemes); }
+    catch (e) { errorBox($("#official-themes"), e, loadOfficialThemes, "the official themes"); }
   }
 
   async function loadCommunityThemes() {
@@ -399,7 +450,7 @@
     } catch (e) {
       themeList.loading = false;
       if (themeList.page) toast(e.message, true);
-      else errorBox($("#community-themes"), e, loadCommunityThemes);
+      else errorBox($("#community-themes"), e, loadCommunityThemes, "community themes");
     }
   }
 
@@ -418,35 +469,59 @@
   function renderColors() {
     const names = S.theme ? Object.keys(S.theme.schemes || {}) : [];
     const list = $("#scheme-list");
+    $("#scheme-note").textContent = S.theme ? `${S.theme.name}${names.length ? ` · ${names.length}` : ""}` : "stock Spotify";
     if (!names.length) {
-      list.replaceChildren(h("span", { class: "muted" }, S.theme ? "This theme has no colour schemes. Tweak the palette below instead." : "Apply a theme to choose from its schemes, or start from Spotify's default palette below."));
+      list.replaceChildren(h("span", { class: "muted" }, S.theme ? "This theme has a single palette. Change it below." : "No theme on, so you're editing Spotify's own colours. Apply a theme to pick from its schemes."));
     } else {
       list.replaceChildren(...names.map((n) => h("button", {
         class: "chip" + ((S.scheme || names[0]) === n ? " on" : ""),
+        "aria-pressed": String((S.scheme || names[0]) === n),
         onclick: async () => { S.scheme = n; S.colorOverrides = {}; await save(); renderColors(); renderCurrentTheme(); },
       }, schemeSwatch(S.theme.schemes[n]), n)));
     }
     const palette = Core.resolvePalette(S);
+    const base = Core.resolvePalette(Object.assign({}, S, { colorOverrides: {} }));
     const pal = $("#palette");
     pal.replaceChildren(...Core.COLOR_ORDER.map((k) => {
-      const v = h("span", { class: "v" }, "#" + palette[k]);
-      const row = h("label", { class: "pal" + (S.colorOverrides[k] ? " changed" : ""), title: S.colorOverrides[k] ? "Tweaked" : "" });
-      const input = h("input", { type: "color", value: "#" + palette[k] });
-      input.addEventListener("input", () => {
-        const hex = input.value.slice(1).toLowerCase();
-        S.colorOverrides[k] = hex;
-        v.textContent = "#" + hex;
+      const row = h("div", { class: "pal" + (S.colorOverrides[k] ? " changed" : "") });
+      const picker = h("input", { type: "color", value: "#" + palette[k], "aria-label": `${k} colour` });
+      const hex = h("input", { class: "hex", value: "#" + palette[k], spellcheck: false, maxlength: "7", "aria-label": `${k} hex value` });
+      const reset = h("button", { class: "icon-btn reset", title: `Back to the scheme's ${k}`, "aria-label": `Reset ${k}` }, svg("M17.65 6.35A7.96 7.96 0 0 0 12 4a8 8 0 1 0 7.73 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z"));
+      const set = (value) => {
+        S.colorOverrides[k] = value;
+        picker.value = hex.value = "#" + value;
         row.classList.add("changed");
         applyMock(Core.resolvePalette(S));
+        $("#colors-saved").textContent = "Saving…";
         saveSoon();
+        clearTimeout(set.t); set.t = setTimeout(() => { $("#colors-saved").textContent = "Saved, and live in Spotify"; }, 400);
+      };
+      picker.addEventListener("input", () => set(picker.value.slice(1).toLowerCase()));
+      hex.addEventListener("input", () => {
+        const v = Core.normalizeHex(hex.value);
+        hex.classList.toggle("bad", !v && hex.value.trim().length > 0);
+        if (v && /^#?[0-9a-f]{6}$/i.test(hex.value.trim())) set(v);
       });
-      row.append(input, h("div", {}, h("div", { class: "k" }, k), v));
+      hex.addEventListener("blur", () => { hex.classList.remove("bad"); hex.value = "#" + Core.resolvePalette(S)[k]; });
+      reset.onclick = async () => {
+        delete S.colorOverrides[k];
+        row.classList.remove("changed");
+        picker.value = hex.value = "#" + base[k];
+        applyMock(Core.resolvePalette(S));
+        await save();
+      };
+      row.append(picker, h("span", { class: "k" }, k), hex, reset);
       return row;
     }));
     applyMock(palette);
   }
 
-  $("#reset-colors").onclick = async () => { S.colorOverrides = {}; await save(); renderColors(); toast("Colour tweaks reset"); };
+  $("#reset-colors").onclick = async () => {
+    const before = Object.assign({}, S.colorOverrides);
+    if (!Object.keys(before).length) return toast("No colour tweaks to reset");
+    S.colorOverrides = {}; await save(); renderColors(); renderCurrentTheme();
+    toast("Colour tweaks reset", false, { label: "Undo", onClick: async () => { S.colorOverrides = before; await save(); renderColors(); renderCurrentTheme(); } });
+  };
 
   // ------------------------------------------------------------------ EXTENSIONS
   const extList = { items: [], page: 0, total: 0, loading: false };
@@ -482,58 +557,63 @@
   }
 
   function installedRow(ext) {
-    const sw = h("input", { type: "checkbox", class: "switch", checked: ext.enabled, title: ext.enabled ? "Disable" : "Enable" });
-    sw.onchange = async () => { ext.enabled = sw.checked; await save(); toast(`${ext.name} ${ext.enabled ? "enabled" : "disabled"} · reload Spotify to apply`); };
+    const sw = h("input", { type: "checkbox", class: "switch", checked: ext.enabled, "aria-label": `${ext.name} on or off` });
+    sw.onchange = async () => { ext.enabled = sw.checked; await save(); toast(`${ext.name} ${ext.enabled ? "on" : "off"}. Reload Spotify to apply`); };
     const kb = (ext.code.length / 1024).toFixed(1) + " KB";
+    const blocked = isBlocked(ext);
     return h("div", { class: "row" },
       h("div", { class: "grow" },
-        h("div", { class: "title" }, ext.name),
-        h("div", { class: "sub" }, isBlocked(ext) ? "Turned off by Spectra because it's known to cause problems · " : "", ext.source ? (ext.source.url || `${ext.source.owner}/${ext.source.repo}`) : "Pasted code", " · ", kb)),
-      h("button", { class: "btn ghost small", onclick: () => showDetails(Object.assign({}, ext, { kind: "extension", code: ext.code.slice(0, 4000) + (ext.code.length > 4000 ? "\n…" : "") }), []) }, "View"),
-      h("button", { class: "btn danger small", onclick: async () => {
-        if (!confirm(`Remove ${ext.name}?`)) return;
-        S.extensions = S.extensions.filter((e) => e !== ext);
-        await save(); renderExtensions(); toast(`${ext.name} removed`);
-      } }, "Remove"),
-      sw);
+        h("div", { class: "title" }, ext.name, blocked ? h("span", { class: "state bad" }, "Turned off by Spectra") : !ext.enabled ? h("span", { class: "state" }, "Off") : null),
+        h("div", { class: "sub" },
+          blocked ? "Known to cause problems right now · " : "",
+          ext.source ? (ext.source.url ? (() => { try { return new URL(ext.source.url).pathname.split("/").slice(1, 3).join("/"); } catch { return ext.source.url; } })() : `${ext.source.owner}/${ext.source.repo}`) : "Pasted code",
+          ` · ${kb}`, ext.updatedAt ? ` · updated ${timeAgo(ext.updatedAt)}` : ext.installedAt ? ` · added ${timeAgo(ext.installedAt)}` : "")),
+      h("div", { class: "actions" },
+        h("button", { class: "btn link small", onclick: () => showDetails(Object.assign({}, ext, { kind: "extension", code: ext.code.slice(0, 4000) + (ext.code.length > 4000 ? "\n…" : "") }), []) }, "Code"),
+        h("button", { class: "btn link small", onclick: async () => {
+          const at = S.extensions.indexOf(ext);
+          S.extensions = S.extensions.filter((e) => e !== ext);
+          await save(); renderExtensions();
+          toast(`${ext.name} removed`, false, { label: "Undo", onClick: async () => { S.extensions.splice(at, 0, ext); await save(); renderExtensions(); } });
+        } }, "Remove"),
+        sw));
   }
 
+  /** Marketplace extensions are rows: what it is and what it does matter more than a big picture. */
   function extCard(item) {
     const installed = S.extensions.find((e) => e.id === item.key);
     const btn = h("button", { class: "btn " + (installed ? "ghost" : "primary") + " small" }, installed ? "Installed" : "Install");
     btn.disabled = !!installed;
-    btn.onclick = (e) => { e.stopPropagation(); busy(btn, "Installing", () => installExtension(item).catch((err) => toast(err.message, true))); };
+    btn.onclick = (e) => { e.stopPropagation(); busy(btn, "Installing", () => installExtension(item).catch((err) => toast(`Couldn't install ${item.name}: ${err.message}`, true))); };
     const details = () => {
       const b = h("button", { class: "btn primary" }, installed ? "Re-install" : "Install");
-      b.onclick = () => busy(b, "Installing", () => installExtension(item).then(closeDrawer).catch((err) => toast(err.message, true)));
+      b.onclick = () => busy(b, "Installing", () => installExtension(item).then(closeDrawer).catch((err) => toast(`Couldn't install ${item.name}: ${err.message}`, true)));
       showDetails(item, [b]);
     };
-    const media = mediaEl(item, details);
-    if (installed) media.append(h("span", { class: "badge ok" }, "Installed"));
-    else if (item.featured) media.append(h("span", { class: "badge featured" }, "Featured"));
-    return h("div", { class: "card" + (installed ? " applied" : "") }, media,
-      h("div", { class: "card-body" },
-        h("div", { class: "card-title" }, item.name),
-        authorLine(item),
-        item.description ? h("div", { class: "card-desc" }, item.description) : null,
-        h("div", { class: "card-actions" }, btn, h("button", { class: "btn ghost small", onclick: details }, "Details"))));
+    return h("div", { class: "row" + (installed ? " installed" : "") },
+      mediaEl(item, details, "row-thumb"),
+      h("div", { class: "grow" },
+        h("div", { class: "title" }, item.name, item.featured ? h("span", { class: "tag" }, "Featured") : null),
+        item.description ? h("div", { class: "desc" }, item.description) : null,
+        authorLine(item)),
+      h("div", { class: "actions" }, h("button", { class: "btn link small", onclick: details }, "Details"), btn));
   }
 
   function renderExtensions() {
     const inst = $("#installed-exts");
     inst.replaceChildren(...(S.extensions.length ? S.extensions.map(installedRow)
-      : [h("div", { class: "empty" }, "No extensions yet. Install one from the marketplace below.")]));
+      : [empty("No extensions yet.", "Install one from the marketplace below, or add your own from a URL.")]));
     const q = $("#ext-search").value;
     const items = filterItems(extList.items, q);
-    if (extList.page) $("#market-exts").replaceChildren(...(items.length ? items.map(extCard) : [h("div", { class: "empty" }, "No extensions match.")]));
-    $("#ext-count").textContent = extList.items.length ? `${extList.items.length} loaded` : "";
+    if (extList.page) $("#market-exts").replaceChildren(...(items.length ? items.map(extCard) : [empty(`No extension matches “${q.trim()}”.`, extList.page * 30 < extList.total ? "Load more below to search further." : null)]));
+    $("#ext-count").textContent = extList.items.length ? `${extList.items.length} of ${extList.total || "…"}, most starred first` : "";
     $("#more-exts").hidden = !extList.page || extList.page * 30 >= extList.total;
   }
 
   async function loadExtensions() {
     if (extList.loading) return;
     extList.loading = true;
-    if (!extList.page) skeletons($("#market-exts"), 6);
+    if (!extList.page) skeletons($("#market-exts"), 6, "row");
     try {
       const { items, total } = await communityPage("spicetify-extensions", "extension", extList.page + 1);
       extList.page++;
@@ -545,7 +625,7 @@
     } catch (e) {
       extList.loading = false;
       if (extList.page) toast(e.message, true);
-      else errorBox($("#market-exts"), e, loadExtensions);
+      else errorBox($("#market-exts"), e, loadExtensions, "the extension marketplace");
     }
   }
 
@@ -605,20 +685,29 @@
     };
     const item = { name: sn.title, description: sn.description, preview: sn.preview, code: sn.code, kind: "snippet" };
     const media = mediaEl(item, () => showDetails(item, []));
-    if (mine) media.append(h("span", { class: "badge ok" }, "Active"));
     return h("div", { class: "card" + (mine ? " applied" : "") }, media,
-      h("div", { class: "card-body" }, h("div", { class: "card-title" }, sn.title),
-        h("div", { class: "card-desc" }, sn.description || ""), h("div", { class: "card-actions" }, btn)));
+      h("div", { class: "card-body" },
+        h("div", { class: "card-title" }, h("span", {}, sn.title), mine ? h("span", { class: "state live" }, "On") : null),
+        sn.description ? h("div", { class: "card-desc" }, sn.description) : null,
+        h("div", { class: "card-actions" }, btn, h("button", { class: "btn link small", onclick: () => showDetails(item, []) }, "CSS"))));
   }
 
   function mySnippetRow(sn) {
-    const sw = h("input", { type: "checkbox", class: "switch", checked: sn.enabled });
+    const sw = h("input", { type: "checkbox", class: "switch", checked: sn.enabled, "aria-label": `${sn.title} on or off` });
     sw.onchange = async () => { sn.enabled = sw.checked; await save(); };
+    const lines = (sn.code.match(/\n/g) || []).length + 1;
     return h("div", { class: "row" },
-      h("div", { class: "grow" }, h("div", { class: "title" }, sn.title), h("div", { class: "sub" }, sn.source && sn.source.startsWith("market:") ? "Marketplace" : "Custom")),
-      h("button", { class: "btn ghost small", onclick: () => editSnippet(sn) }, "Edit"),
-      h("button", { class: "btn danger small", onclick: async () => { S.snippets = S.snippets.filter((s) => s !== sn); await save(); renderSnippets(); } }, "Remove"),
-      sw);
+      h("div", { class: "grow" },
+        h("div", { class: "title" }, sn.title),
+        h("div", { class: "sub" }, sn.source && sn.source.startsWith("market:") ? "From the marketplace" : "Written by you", ` · ${lines} line${lines > 1 ? "s" : ""}`)),
+      h("div", { class: "actions" },
+        h("button", { class: "btn link small", onclick: () => editSnippet(sn) }, "Edit"),
+        h("button", { class: "btn link small", onclick: async () => {
+          const at = S.snippets.indexOf(sn);
+          S.snippets = S.snippets.filter((s) => s !== sn); await save(); renderSnippets();
+          toast(`${sn.title} removed`, false, { label: "Undo", onClick: async () => { S.snippets.splice(at, 0, sn); await save(); renderSnippets(); } });
+        } }, "Remove"),
+        sw));
   }
 
   function editSnippet(sn) {
@@ -640,11 +729,13 @@
   }
 
   function renderSnippets() {
-    $("#my-snippets").replaceChildren(...(S.snippets.length ? S.snippets.map(mySnippetRow) : [h("div", { class: "empty" }, "No snippets yet.")]));
+    $("#my-snippets").replaceChildren(...(S.snippets.length ? S.snippets.map(mySnippetRow)
+      : [empty("No snippets on yet.", "Add one from the marketplace below, or write your own with New snippet.")]));
     if (!marketSnippets.length) return;
-    const items = filterItems(marketSnippets.map((s) => Object.assign({ name: s.title }, s)), $("#snippet-search").value);
-    $("#market-snippets").replaceChildren(...(items.length ? items.map(snippetCard) : [h("div", { class: "empty" }, "No snippets match.")]));
-    $("#snippet-count").textContent = `${marketSnippets.length} snippets`;
+    const q = $("#snippet-search").value;
+    const items = filterItems(marketSnippets.map((s) => Object.assign({ name: s.title }, s)), q);
+    $("#market-snippets").replaceChildren(...(items.length ? items.map(snippetCard) : [empty(`No snippet matches “${q.trim()}”.`)]));
+    $("#snippet-count").textContent = `${marketSnippets.length} from the Spicetify marketplace`;
   }
 
   async function loadSnippets() {
@@ -655,15 +746,31 @@
         preview: s.preview ? Core.rawUrl(MARKET.owner, MARKET.repo, MARKET.branch, s.preview) : null,
       }));
       renderSnippets();
-    } catch (e) { errorBox($("#market-snippets"), e, loadSnippets); }
+    } catch (e) { errorBox($("#market-snippets"), e, loadSnippets, "the snippet marketplace"); }
   }
   $("#snippet-search").addEventListener("input", debounce(renderSnippets, 120));
   $("#add-snippet").onclick = () => editSnippet(null);
 
   // ------------------------------------------------------------------ CUSTOM CSS
   const cssBox = $("#custom-css");
-  const cssSave = debounce(async () => { S.customCSS = cssBox.value; await save(); $("#css-status").textContent = "Saved · live"; }, 350);
-  cssBox.addEventListener("input", () => { $("#css-status").textContent = "Saving…"; cssSave(); });
+  const cssStatus = (text, cls) => { const s = $("#css-status"); s.textContent = text; s.className = "state " + (cls || ""); };
+  /** Line numbers, a size readout and a quick check that braces are balanced. */
+  function cssChrome() {
+    const v = cssBox.value;
+    const lines = (v.match(/\n/g) || []).length + 1;
+    const g = $("#css-gutter");
+    if (g.dataset.n !== String(lines)) { g.dataset.n = String(lines); g.textContent = Array.from({ length: lines }, (_, i) => i + 1).join("\n"); }
+    $("#css-meta").textContent = `${lines} line${lines > 1 ? "s" : ""} · ${(new Blob([v]).size / 1024).toFixed(1)} KB`;
+    const open = (v.replace(/\/\*[\s\S]*?\*\//g, "").match(/{/g) || []).length, close = (v.replace(/\/\*[\s\S]*?\*\//g, "").match(/}/g) || []).length;
+    return open === close ? "" : open > close ? `${open - close} unclosed {` : `${close - open} extra }`;
+  }
+  const cssSave = debounce(async () => {
+    S.customCSS = cssBox.value; await save();
+    const problem = cssChrome();
+    problem ? cssStatus(`Saved, but check: ${problem}`, "warn") : cssStatus(S.customCSS.trim() ? "Saved, live in Spotify" : "Saved", "live");
+  }, 350);
+  cssBox.addEventListener("input", () => { cssStatus("Saving…"); cssChrome(); cssSave(); });
+  cssBox.addEventListener("scroll", () => { $("#css-gutter").scrollTop = cssBox.scrollTop; });
   cssBox.addEventListener("keydown", (e) => {
     if (e.key === "Tab") {
       e.preventDefault();
@@ -726,9 +833,15 @@
     if (document.activeElement !== $("#update-server")) $("#update-server").value = S.options.updateServer || "";
     $$("[data-app-opt]").forEach((i) => { i.checked = !!S.app[i.dataset.appOpt]; });
     if (document.activeElement !== $("#spotify-path")) $("#spotify-path").value = S.app.spotifyPath || "";
+    renderMaster();
+    if (document.activeElement !== cssBox) { cssBox.value = S.customCSS || ""; cssChrome(); }
+  }
+
+  function renderMaster() {
     $("#master").checked = S.enabled;
     $("#master-label").textContent = S.enabled ? "on" : "off";
-    if (document.activeElement !== cssBox) cssBox.value = S.customCSS || "";
+    $("#master-row").classList.toggle("off", !S.enabled);
+    $("#master-sub").textContent = S.enabled ? "Your theme and extensions are live" : "Spotify looks stock until you turn this on";
   }
 
   $$("[data-opt]").forEach((i) => i.addEventListener("change", async () => { S.options[i.dataset.opt] = i.checked; await save(); toast("Saved"); }));
@@ -737,7 +850,7 @@
     Object.keys(localStorage).filter((k) => k.startsWith("spectra-cache:community")).forEach((k) => localStorage.removeItem(k));
     toast("GitHub token saved");
   });
-  $("#master").addEventListener("change", async (e) => { S.enabled = e.target.checked; $("#master-label").textContent = S.enabled ? "on" : "off"; await save(); });
+  $("#master").addEventListener("change", async (e) => { S.enabled = e.target.checked; renderMaster(); renderCurrentTheme(); await save(); });
   $("#reload-tabs").onclick = async () => {
     const r = await api.runtime.sendMessage({ type: "reloadSpotifyTabs" });
     if (IS_APP) toast(r && r.ok ? "Spotify reloaded" : "Spotify isn't connected", !(r && r.ok));
@@ -803,6 +916,9 @@
 
   function renderRemote() {
     const data = R();
+    // Discord invite: set from the admin page, with discord.gg/spicetify as the built-in default.
+    const discord = data && data.links && data.links.discord;
+    if (discord && /^https:\/\/(discord\.gg|discord\.com\/invite)\/[\w-]+\/?$/.test(discord)) $("#discord-link").href = discord;
     // Announcement (dismissal is remembered per announcement id)
     const a = data && data.announcement;
     const dismissed = (() => { try { return localStorage.getItem("spectra-dismissed-announcement"); } catch { return null; } })();
@@ -935,7 +1051,11 @@
     remote = savedRemote || null;
     renderAll();
     renderRemote();
-    api.runtime.sendMessage({ type: "appInfo" }).then((info) => { appInfo = info || null; renderRemote(); }).catch(() => {});
+    api.runtime.sendMessage({ type: "appInfo" }).then((info) => {
+      appInfo = info || null;
+      if (appInfo && appInfo.version) $("#brand-ver").textContent = "v" + appInfo.version;
+      renderRemote();
+    }).catch(() => {});
     api.runtime.sendMessage({ type: "ensureRemote" }).catch(() => {});
     checkPerms();
     const hash = location.hash.slice(1);
