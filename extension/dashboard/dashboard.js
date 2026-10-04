@@ -12,6 +12,10 @@
 
   let S = Core.normalizeState(null);
   let lastWritten = null;
+  // Filled in by creator.js (My Library and the Spectra Store).
+  const hooks = {};
+  const viewHooks = {};
+  const renderers = [];
 
   // ------------------------------------------------------------------ helpers
   const $ = (s, r = document) => r.querySelector(s);
@@ -283,7 +287,8 @@
   function dirname(p) { return p && p.includes("/") ? p.slice(0, p.lastIndexOf("/")) : ""; }
   function basename(p) { return String(p).split(/[/?#]/).filter(Boolean).pop() || "script.js"; }
 
-  async function installTheme(item) {
+  /** A marketplace theme's CSS (with asset links made absolute), colour schemes and scripts. */
+  async function fetchThemePackage(item, withScripts = true) {
     const raw = (p) => Core.rawUrl(item.owner, item.repo, item.branch, p);
     const [cssRaw, ini] = await Promise.all([
       item.usercss ? ghFetch(raw(item.usercss), "text") : "",
@@ -291,13 +296,17 @@
     ]);
     const base = /^https?:/i.test(item.usercss || "") ? new URL(".", item.usercss).href : Core.cdnBase(item.owner, item.repo, item.branch, dirname(item.usercss || ""));
     const scripts = [];
-    for (const inc of item.include || []) {
+    for (const inc of withScripts ? item.include || [] : []) {
       try { scripts.push({ name: basename(inc), code: await ghFetch(raw(inc), "text") }); }
       catch (e) { toast(`Skipped theme script ${basename(inc)}: ${e.message}`, true); }
     }
-    const schemes = Core.parseColorIni(ini);
+    return { css: Core.absolutizeCSS(cssRaw, base), schemes: Core.parseColorIni(ini), scripts };
+  }
+
+  async function installTheme(item) {
+    const { css, schemes, scripts } = await fetchThemePackage(item);
     S.theme = {
-      id: item.key, name: item.name, css: Core.absolutizeCSS(cssRaw, base), schemes, scripts,
+      id: item.key, name: item.name, css, schemes, scripts,
       preview: item.preview, readme: item.readme, url: item.url, authors: item.authors,
       source: { owner: item.owner, repo: item.repo, branch: item.branch, usercss: item.usercss, schemes: item.schemes, include: item.include },
       installedAt: Date.now(),
@@ -328,7 +337,12 @@
     const details = () => {
       const b = h("button", { class: "btn primary" }, applied ? "Re-install" : "Apply theme");
       b.onclick = () => busy(b, "Applying", () => installTheme(item).then(closeDrawer).catch((err) => toast(`Couldn't apply ${item.name}: ${err.message}`, true)));
-      showDetails(item, [b]);
+      const c = hooks.customize ? h("button", { class: "btn ghost", title: "Make your own copy in My Library, with credit to the original" }, "Customize") : null;
+      if (c) c.onclick = () => busy(c, "Copying", async () => {
+        try { const pkg = await fetchThemePackage(item, false); closeDrawer(); hooks.customize("theme", Object.assign({ name: item.name, authors: item.authors, url: item.url, preview: item.preview }, pkg)); }
+        catch (err) { toast(`Couldn't copy ${item.name}: ${err.message}`, true); }
+      });
+      showDetails(item, [b, c]);
     };
     const media = mediaEl(item, details);
     if (item.featured && !applied) media.append(h("span", { class: "badge featured" }, "Featured"));
@@ -394,8 +408,11 @@
           names.length > shown.length ? h("button", { class: "btn link small", onclick: () => switchView("colors") }, `+${names.length - shown.length} more`) : null);
         })() : null),
       h("div", { class: "now-actions" },
-        h("button", { class: "btn ghost small", onclick: () => switchView("colors") }, "Edit colours"),
-        t.source ? h("button", { class: "btn link small", title: "Download the latest version of this theme", onclick: (e) => busy(e.currentTarget, "Updating", () => reinstallCurrentTheme()) }, "Check for update") : null,
+        t.creationId && hooks.editCreation
+          ? h("button", { class: "btn ghost small", onclick: () => hooks.editCreation(t.creationId) }, "Edit in My Library")
+          : h("button", { class: "btn ghost small", onclick: () => switchView("colors") }, "Edit colours"),
+        !t.creationId && hooks.customize ? h("button", { class: "btn link small", title: "Make your own copy to change and share, with credit to the original", onclick: () => hooks.customize("theme", t) }, "Customize") : null,
+        t.source && (t.source.store || t.source.owner) ? h("button", { class: "btn link small", title: "Download the latest version of this theme", onclick: (e) => busy(e.currentTarget, "Updating", () => reinstallCurrentTheme()) }, "Check for update") : null,
         h("button", { class: "btn link small", onclick: removeTheme }, "Remove"))));
   }
 
@@ -403,6 +420,15 @@
     const t = S.theme;
     if (!t || !t.source) return;
     const keepScheme = S.scheme, keepOverrides = S.colorOverrides;
+    if (t.source.store) {
+      if (!hooks.updateStoreTheme) return;
+      if (!(await hooks.updateStoreTheme(t))) return toast("This is the newest version");
+      if (keepScheme && S.theme.schemes[keepScheme]) S.scheme = keepScheme;
+      S.colorOverrides = keepOverrides;
+      await save();
+      renderThemes(); renderColors();
+      return;
+    }
     await installTheme(Object.assign({}, t.source, { key: t.id, name: t.name, preview: t.preview, readme: t.readme, url: t.url, authors: t.authors }));
     if (keepScheme && S.theme.schemes[keepScheme]) S.scheme = keepScheme;
     S.colorOverrides = keepOverrides;
@@ -548,6 +574,7 @@
 
   async function updateExtension(ext) {
     if (!ext.source) return false;
+    if (ext.source.store) return hooks.updateStoreExtension ? hooks.updateStoreExtension(ext) : false;
     const url = ext.source.url || Core.rawUrl(ext.source.owner, ext.source.repo, ext.source.branch, ext.source.path);
     const code = await ghFetch(url, "text");
     if (code === ext.code) return false;
@@ -561,15 +588,24 @@
     sw.onchange = async () => { ext.enabled = sw.checked; await save(); toast(`${ext.name} ${ext.enabled ? "on" : "off"}. Reload Spotify to apply`); };
     const kb = (ext.code.length / 1024).toFixed(1) + " KB";
     const blocked = isBlocked(ext);
+    const P = globalThis.SpectraPackage;
+    // Spectra Store and My Library extensions only get the permissions they asked for; everything else runs with full access.
+    const access = Array.isArray(ext.permissions)
+      ? h("span", { class: "perm-line", title: ext.permissions.map((p) => P && P.PERMISSIONS[p] ? P.PERMISSIONS[p].label : p).join(", ") || "No special permissions" },
+        ext.permissions.length ? `Can: ${ext.permissions.map((p) => (P && P.PERMISSIONS[p] ? P.PERMISSIONS[p].label.replace(/^./, (ch) => ch.toLowerCase()) : p)).join(", ")}` : "No special permissions")
+      : h("span", { class: "perm-line full", title: "Spicetify extensions run with the same access as Spotify's own page" }, "Full access");
+    const from = ext.creationId ? "Made by you" : ext.source && ext.source.store ? `Spectra Store · v${ext.source.version || "?"}`
+      : ext.source ? (ext.source.url ? (() => { try { return new URL(ext.source.url).pathname.split("/").slice(1, 3).join("/"); } catch { return ext.source.url; } })() : `${ext.source.owner}/${ext.source.repo}`) : "Pasted code";
     return h("div", { class: "row" },
       h("div", { class: "grow" },
         h("div", { class: "title" }, ext.name, blocked ? h("span", { class: "state bad" }, "Turned off by Spectra") : !ext.enabled ? h("span", { class: "state" }, "Off") : null),
         h("div", { class: "sub" },
-          blocked ? "Known to cause problems right now · " : "",
-          ext.source ? (ext.source.url ? (() => { try { return new URL(ext.source.url).pathname.split("/").slice(1, 3).join("/"); } catch { return ext.source.url; } })() : `${ext.source.owner}/${ext.source.repo}`) : "Pasted code",
-          ` · ${kb}`, ext.updatedAt ? ` · updated ${timeAgo(ext.updatedAt)}` : ext.installedAt ? ` · added ${timeAgo(ext.installedAt)}` : "")),
+          blocked ? "Known to cause problems right now · " : "", from,
+          ` · ${kb}`, ext.updatedAt ? ` · updated ${timeAgo(ext.updatedAt)}` : ext.installedAt ? ` · added ${timeAgo(ext.installedAt)}` : "", " · ", access)),
       h("div", { class: "actions" },
         h("button", { class: "btn link small", onclick: () => showDetails(Object.assign({}, ext, { kind: "extension", code: ext.code.slice(0, 4000) + (ext.code.length > 4000 ? "\n…" : "") }), []) }, "Code"),
+        ext.creationId && hooks.editCreation ? h("button", { class: "btn link small", onclick: () => hooks.editCreation(ext.creationId) }, "Edit")
+          : hooks.customize ? h("button", { class: "btn link small", title: "Make your own copy to change and share, with credit to the original", onclick: () => hooks.customize("extension", ext) }, "Customize") : null,
         h("button", { class: "btn link small", onclick: async () => {
           const at = S.extensions.indexOf(ext);
           S.extensions = S.extensions.filter((e) => e !== ext);
@@ -588,7 +624,12 @@
     const details = () => {
       const b = h("button", { class: "btn primary" }, installed ? "Re-install" : "Install");
       b.onclick = () => busy(b, "Installing", () => installExtension(item).then(closeDrawer).catch((err) => toast(`Couldn't install ${item.name}: ${err.message}`, true)));
-      showDetails(item, [b]);
+      const c = hooks.customize ? h("button", { class: "btn ghost", title: "Make your own copy in My Library, with credit to the original" }, "Customize") : null;
+      if (c) c.onclick = () => busy(c, "Copying", async () => {
+        try { const code = await ghFetch(Core.rawUrl(item.owner, item.repo, item.branch, item.main), "text"); closeDrawer(); hooks.customize("extension", { name: item.name, description: item.description, code, authors: item.authors, url: item.url }); }
+        catch (err) { toast(`Couldn't copy ${item.name}: ${err.message}`, true); }
+      });
+      showDetails(item, [b, c]);
     };
     return h("div", { class: "row" + (installed ? " installed" : "") },
       mediaEl(item, details, "row-thumb"),
@@ -684,12 +725,13 @@
       toast(mine ? `${sn.title} removed` : `${sn.title} added`);
     };
     const item = { name: sn.title, description: sn.description, preview: sn.preview, code: sn.code, kind: "snippet" };
-    const media = mediaEl(item, () => showDetails(item, []));
+    const actions = () => (hooks.customize ? [h("button", { class: "btn ghost", onclick: () => { closeDrawer(); hooks.customize("snippet", { title: sn.title, code: sn.code, description: sn.description }); } }, "Customize")] : []);
+    const media = mediaEl(item, () => showDetails(item, actions()));
     return h("div", { class: "card" + (mine ? " applied" : "") }, media,
       h("div", { class: "card-body" },
         h("div", { class: "card-title" }, h("span", {}, sn.title), mine ? h("span", { class: "state live" }, "On") : null),
         sn.description ? h("div", { class: "card-desc" }, sn.description) : null,
-        h("div", { class: "card-actions" }, btn, h("button", { class: "btn link small", onclick: () => showDetails(item, []) }, "CSS"))));
+        h("div", { class: "card-actions" }, btn, h("button", { class: "btn link small", onclick: () => showDetails(item, actions()) }, "CSS"))));
   }
 
   function mySnippetRow(sn) {
@@ -699,9 +741,11 @@
     return h("div", { class: "row" },
       h("div", { class: "grow" },
         h("div", { class: "title" }, sn.title),
-        h("div", { class: "sub" }, sn.source && sn.source.startsWith("market:") ? "From the marketplace" : "Written by you", ` · ${lines} line${lines > 1 ? "s" : ""}`)),
+        h("div", { class: "sub" }, sn.creationId ? "Made by you in My Library" : sn.source && sn.source.startsWith("market:") ? "From the marketplace" : sn.source && sn.source.startsWith("store:") ? "From the Spectra Store" : "Written by you", ` · ${lines} line${lines > 1 ? "s" : ""}`)),
       h("div", { class: "actions" },
-        h("button", { class: "btn link small", onclick: () => editSnippet(sn) }, "Edit"),
+        sn.creationId && hooks.editCreation ? h("button", { class: "btn link small", onclick: () => hooks.editCreation(sn.creationId) }, "Edit")
+          : h("button", { class: "btn link small", onclick: () => editSnippet(sn) }, "Edit"),
+        !sn.creationId && hooks.customize ? h("button", { class: "btn link small", title: "Turn it into a snippet in My Library that you can version and share", onclick: () => hooks.customize("snippet", sn) }, "Customize") : null,
         h("button", { class: "btn link small", onclick: async () => {
           const at = S.snippets.indexOf(sn);
           S.snippets = S.snippets.filter((s) => s !== sn); await save(); renderSnippets();
@@ -992,22 +1036,39 @@
   // ------------------------------------------------------------------ nav
   const loaded = {};
   function switchView(name) {
+    const full = String(name || "");
+    name = full.split(":")[0]; // "creator:<id>" opens the editor for that item
     if (!$(`.view[data-view="${name}"]`)) name = "themes";
-    $$(".nav button").forEach((b) => b.classList.toggle("active", b.dataset.view === name));
+    const navName = name === "creator" ? "library" : name; // the editor lives under My Library
+    $$(".nav button").forEach((b) => b.classList.toggle("active", b.dataset.view === navName));
     $$(".view").forEach((v) => v.classList.toggle("active", v.dataset.view === name));
-    history.replaceState(null, "", "#" + name);
+    const keepId = name === "creator" && (full.startsWith("creator:") ? full : location.hash.startsWith("#creator:") ? location.hash.slice(1) : "");
+    history.replaceState(null, "", "#" + (keepId || name));
     clearInterval(spotifyTimer);
     if (name === "themes" && !loaded.themes) { loaded.themes = 1; loadOfficialThemes(); loadCommunityThemes(); }
     if (name === "extensions" && !loaded.ext) { loaded.ext = 1; loadExtensions(); }
     if (name === "snippets" && !loaded.snip) { loaded.snip = 1; loadSnippets(); }
     if (name === "spotify") { refreshSpotify(); spotifyTimer = setInterval(refreshSpotify, 2000); }
+    for (const fn of viewHooks[name] || []) { try { fn(); } catch (e) { console.error(e); } }
     window.scrollTo({ top: 0 });
   }
   $$(".nav button").forEach((b) => b.addEventListener("click", () => switchView(b.dataset.view)));
 
   function renderAll() {
     renderSettings(); renderThemes(); renderColors(); renderExtensions(); renderSnippets();
+    for (const fn of renderers) { try { fn(); } catch (e) { console.error(e); } }
   }
+
+  // What creator.js needs from here. `S` is a getter because imports and resets replace the object.
+  globalThis.__spectraDash = {
+    get S() { return S; }, api, Core, hooks, IS_APP, IS_ANDROID,
+    h, $, $$, svg, toast, busy, save, saveSoon, debounce, cached, ghFetch,
+    openDrawer, closeDrawer, showDetails, placeholder, mediaEl, skeletons, errorBox, empty, renderReadme, timeAgo, filterItems,
+    switchView, renderAll, renderThemes, renderColors, renderExtensions, renderSnippets, fetchThemePackage,
+    onView(name, fn) { (viewHooks[name] = viewHooks[name] || []).push(fn); },
+    onRender(fn) { renderers.push(fn); },
+    get remote() { return R(); },
+  };
 
   // ------------------------------------------------------------------ permissions (Firefox asks separately)
   async function checkPerms() {

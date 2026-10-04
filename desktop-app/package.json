@@ -1,7 +1,7 @@
 {
   "name": "spectra-desktop",
   "productName": "Spectra",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Themes, extensions and snippets for the Spotify desktop app. Spicetify-compatible, no file patching.",
   "main": "src/main.js",
   "private": true,

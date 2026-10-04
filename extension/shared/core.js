@@ -42,6 +42,10 @@
     snippets: [],         // [{ id, title, code, enabled, source }]
     extensions: [],       // [{ id, name, code, enabled, source, description }]
     customCSS: "",
+    // My Library: things this person makes (see shared/package.js for the format).
+    creator: { key: "", name: "", bio: "", link: "" }, // public profile for the Spectra Store; separate from Spotify
+    creations: [],
+    favorites: [],        // Spectra Store item ids
     options: {
       recolorSpotify: true,   // rewrite Spotify's own CSS colours into --spice-* vars (what Spicetify does at install time)
       classCompat: true,      // map Spicetify's readable class names onto Spotify's hashed ones
@@ -82,6 +86,8 @@
     }
     if (!Array.isArray(out.snippets)) out.snippets = [];
     if (!Array.isArray(out.extensions)) out.extensions = [];
+    if (!Array.isArray(out.creations)) out.creations = [];
+    if (!Array.isArray(out.favorites)) out.favorites = [];
     return out;
   }
 
@@ -189,7 +195,10 @@
       }
     }
     for (const ext of state.extensions) {
-      if (ext.enabled && ext.code && !blocked.has(ext.id)) scripts.push({ id: ext.id, name: ext.name, code: ext.code });
+      // Store and My Library extensions carry the permissions they asked for; the runtime holds them to it.
+      if (ext.enabled && ext.code && !blocked.has(ext.id)) scripts.push(Array.isArray(ext.permissions)
+        ? { id: ext.id, name: ext.name, code: ext.code, permissions: ext.permissions.slice() }
+        : { id: ext.id, name: ext.name, code: ext.code });
     }
     if (remote && opts && opts.allowRemoteScripts && Array.isArray(remote.scripts)) {
       for (const r of remote.scripts) if (forPlatform(r) && r.code) scripts.push({ id: "remote:" + r.id, name: r.name || r.id, code: r.code });

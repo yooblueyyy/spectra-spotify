@@ -572,51 +572,98 @@
   #spectra-menu .item:hover{background:rgba(var(--spice-rgb-text,255,255,255),.1)}
   #spectra-menu .item .check{color:var(--spice-button,#1db954)}
   #spectra-menu .sep{height:1px;background:rgba(var(--spice-rgb-text,255,255,255),.1);margin:4px 0}
-  .spectra-lt{display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.45}
+  .spectra-lt{display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.45;color:var(--spice-text,#fff)}
+  .spectra-lt .grow{flex:1;min-width:0}
+  .spectra-lt .sub{color:var(--spice-subtext,#b3b3b3);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .spectra-lt-intro{margin:0;color:var(--spice-subtext,#b3b3b3)}
-  .spectra-lt-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--spice-subtext,#b3b3b3);margin-top:4px}
-  .spectra-lt-input{all:unset;box-sizing:border-box;width:100%;padding:10px 14px;border-radius:8px;background:rgba(var(--spice-rgb-text,255,255,255),.08);color:var(--spice-text,#fff);font-size:15px}
-  .spectra-lt-input:focus{box-shadow:inset 0 0 0 2px var(--spice-button,#1db954)}
-  .spectra-lt-input.code{font:700 18px/1 ui-monospace,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;flex:1}
+  .spectra-lt-hint{margin:0;font-size:12.5px;color:var(--spice-subtext,#b3b3b3)}
+  .spectra-lt-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--spice-subtext,#b3b3b3)}
+  .spectra-lt-section{display:flex;flex-direction:column;gap:6px}
+  .spectra-lt-input{all:unset;box-sizing:border-box;flex:1;min-width:0;width:100%;padding:9px 12px;border-radius:6px;background:rgba(var(--spice-rgb-text,255,255,255),.07);color:var(--spice-text,#fff);font-size:14px}
+  .spectra-lt-input:focus{box-shadow:inset 0 0 0 1.5px var(--spice-button,#1db954)}
+  .spectra-lt-input.code{font:700 18px/1 ui-monospace,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase}
   .spectra-lt-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .spectra-lt-row.end{justify-content:flex-end;margin-top:6px}
-  .spectra-lt-btn{all:unset;cursor:pointer;padding:10px 18px;border-radius:999px;font-weight:700;background:rgba(var(--spice-rgb-text,255,255,255),.1);color:var(--spice-text,#fff);text-align:center}
-  .spectra-lt-btn:hover{background:rgba(var(--spice-rgb-text,255,255,255),.18)}
-  .spectra-lt-btn.primary{background:var(--spice-button,#1db954);color:#000;flex:1}
-  .spectra-lt-btn.primary:hover{filter:brightness(1.1)}
-  .spectra-lt-btn.danger{color:#ff8a8a}
-  .spectra-lt-or{text-align:center;color:var(--spice-subtext,#b3b3b3);font-size:12px;margin:4px 0}
-  .spectra-lt-code{flex:1;font:800 40px/1 ui-monospace,Consolas,monospace;letter-spacing:.14em;color:var(--spice-text,#fff);user-select:all;padding:6px 0}
-  .spectra-lt-np{display:flex;gap:12px;align-items:center;padding:10px;border-radius:10px;background:rgba(var(--spice-rgb-text,255,255,255),.06)}
-  .spectra-lt-np.empty{color:var(--spice-subtext,#b3b3b3);justify-content:center;padding:16px}
-  .spectra-lt-np img,.spectra-lt-np .art{width:52px;height:52px;border-radius:6px;object-fit:cover;background:rgba(var(--spice-rgb-text,255,255,255),.1);flex:none}
-  .spectra-lt-np .sub{color:var(--spice-subtext,#b3b3b3);font-size:13px}
-  .spectra-lt-members{display:flex;flex-direction:column;gap:4px}
-  .spectra-lt-member{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px;border-radius:8px;background:rgba(var(--spice-rgb-text,255,255,255),.05)}
-  .spectra-lt-member .who{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .spectra-lt-actions{display:flex;gap:6px;flex:none}
-  .spectra-lt-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:4px;background:rgba(var(--spice-rgb-text,255,255,255),.12)}
-  .spectra-lt-badge.host{background:rgba(255,210,63,.22);color:#ffd23f}
-  .spectra-lt-badge.dj{background:rgba(var(--spice-rgb-button,29,185,84),.22);color:var(--spice-button,#1db954)}
-  .spectra-lt-tabs{display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(var(--spice-rgb-text,255,255,255),.06);margin-top:4px}
-  .spectra-lt-tab{all:unset;cursor:pointer;flex:1;text-align:center;padding:8px 10px;border-radius:999px;font-weight:600;font-size:13px;color:var(--spice-subtext,#b3b3b3)}
-  .spectra-lt-tab.on{background:var(--spice-text,#fff);color:var(--spice-main,#121212)}
-  .spectra-lt-rooms{display:flex;flex-direction:column;gap:6px;max-height:320px;overflow:auto}
-  .spectra-lt-room{display:flex;align-items:center;gap:12px;padding:8px;border-radius:10px;background:rgba(var(--spice-rgb-text,255,255,255),.05)}
-  .spectra-lt-room img,.spectra-lt-room .art{width:48px;height:48px;border-radius:6px;object-fit:cover;flex:none;display:grid;place-items:center;background:rgba(var(--spice-rgb-text,255,255,255),.1);font-size:20px}
-  .spectra-lt-room .info{flex:1;min-width:0}
-  .spectra-lt-room .sub,.spectra-lt .sub{color:var(--spice-subtext,#b3b3b3);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .spectra-lt-choice{all:unset;cursor:pointer;flex:1;min-width:150px;display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:10px;box-shadow:inset 0 0 0 1.5px rgba(var(--spice-rgb-text,255,255,255),.15)}
-  .spectra-lt-choice span{font-size:12px;color:var(--spice-subtext,#b3b3b3)}
-  .spectra-lt-choice.on{box-shadow:inset 0 0 0 2px var(--spice-button,#1db954);background:rgba(var(--spice-rgb-button,29,185,84),.08)}
-  .spectra-lt-title{font-size:18px;font-weight:800}
-  .spectra-lt-hint{margin:0;font-size:12px;color:var(--spice-subtext,#b3b3b3)}
-  .spectra-lt-dj{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:10px;background:rgba(var(--spice-rgb-button,29,185,84),.07)}
+  .spectra-lt-row.end{justify-content:flex-end}
   .spectra-lt-row.between{justify-content:space-between}
+  .spectra-lt-btn{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 16px;border-radius:999px;font-weight:700;font-size:13px;background:rgba(var(--spice-rgb-text,255,255,255),.1);color:var(--spice-text,#fff);text-align:center;white-space:nowrap}
+  .spectra-lt-btn:hover{background:rgba(var(--spice-rgb-text,255,255,255),.16)}
+  .spectra-lt-btn:focus-visible,.spectra-lt-tab:focus-visible,.spectra-lt-choice:focus-visible,.spectra-lt-seg button:focus-visible{outline:2px solid var(--spice-button,#1db954);outline-offset:2px}
   .spectra-lt-btn.small{padding:6px 12px;font-size:12px}
+  .spectra-lt-btn.primary{background:var(--spice-button,#1db954);color:#000;flex:1}
+  .spectra-lt-btn.primary:hover,.spectra-lt-btn.accent:hover{filter:brightness(1.08)}
   .spectra-lt-btn.accent{background:var(--spice-button,#1db954);color:#000}
-  .spectra-lt-status{margin:0;color:#ffcf7a;font-size:13px}
-  #spectra-lt-pill{all:unset;position:fixed;left:16px;bottom:104px;z-index:2147480000;cursor:pointer;padding:7px 14px;border-radius:999px;font:600 13px/1.2 var(--encore-body-font-stack,system-ui,sans-serif);color:#fff;background:linear-gradient(135deg,#8b5cf6,#22d3a6);box-shadow:0 6px 20px rgba(0,0,0,.4);pointer-events:auto}
+  .spectra-lt-btn.danger{color:#ff9090;background:transparent;box-shadow:inset 0 0 0 1px rgba(255,144,144,.35)}
+  .spectra-lt-btn.danger:hover{background:rgba(255,144,144,.1)}
+  .spectra-lt-btn.code{font:700 13px/1 ui-monospace,Consolas,monospace;letter-spacing:.1em;padding:8px 12px}
+  .spectra-lt-head{display:flex;align-items:flex-start;gap:12px}
+  .spectra-lt-title{font-size:18px;font-weight:800;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .spectra-lt-head .sub{display:flex;align-items:center;gap:4px;margin-top:2px}
+  .spectra-lt-conn{display:inline-flex;align-items:center;gap:5px;color:var(--spice-text,#fff)}
+  .spectra-lt-conn i{width:7px;height:7px;border-radius:50%;background:#888}
+  .spectra-lt-conn.ok i{background:var(--spice-button,#1db954)}
+  .spectra-lt-conn.warn i{background:#f0b44c;animation:spectra-lt-blink 1s ease-in-out infinite}
+  .spectra-lt-conn.bad i{background:#ff7070}
+  @keyframes spectra-lt-blink{50%{opacity:.35}}
+  .spectra-lt-me{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:rgba(var(--spice-rgb-text,255,255,255),.05)}
+  .spectra-lt-me strong{display:block;font-size:14px}
+  .spectra-lt-av{position:relative;flex:none;width:28px;height:28px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;background:hsl(var(--h,260) 32% 34%)}
+  .spectra-lt-av.lg{width:36px;height:36px;font-size:14px}
+  .spectra-lt-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .spectra-lt-np{display:flex;gap:12px;align-items:center;padding:10px;border-radius:8px;background:rgba(var(--spice-rgb-text,255,255,255),.06)}
+  .spectra-lt-np.empty{color:var(--spice-subtext,#b3b3b3);justify-content:center;padding:18px;text-align:center}
+  .spectra-lt-np img,.spectra-lt-np .art{width:64px;height:64px;border-radius:4px;object-fit:cover;background:rgba(var(--spice-rgb-text,255,255,255),.1);flex:none}
+  .spectra-lt-np-top{display:flex;align-items:center;gap:8px;min-width:0}
+  .spectra-lt-np-top strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .spectra-lt-tag{flex:none;font-size:11px;font-weight:600;padding:1px 6px;border-radius:4px;background:rgba(var(--spice-rgb-text,255,255,255),.12);color:var(--spice-subtext,#b3b3b3)}
+  .spectra-lt-bar{height:4px;border-radius:2px;background:rgba(var(--spice-rgb-text,255,255,255),.15);margin-top:8px;overflow:hidden}
+  .spectra-lt-bar i{display:block;height:100%;background:var(--spice-text,#fff);border-radius:2px;transition:width .5s linear}
+  .spectra-lt-times{display:flex;justify-content:space-between;gap:8px;margin-top:4px;font-size:11px;color:var(--spice-subtext,#b3b3b3);font-variant-numeric:tabular-nums}
+  .spectra-lt-list{display:flex;flex-direction:column;gap:2px}
+  .spectra-lt-track,.spectra-lt-member{display:flex;align-items:center;gap:10px;padding:5px 6px;border-radius:6px;min-height:36px}
+  .spectra-lt-track:hover,.spectra-lt-member:hover{background:rgba(var(--spice-rgb-text,255,255,255),.05)}
+  .spectra-lt-track img,.spectra-lt-track .art{width:36px;height:36px;border-radius:3px;object-fit:cover;flex:none;background:rgba(var(--spice-rgb-text,255,255,255),.1)}
+  .spectra-lt-track .t{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .spectra-lt-by{flex:none;font-size:11.5px;color:var(--spice-subtext,#b3b3b3);max-width:40%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .spectra-lt-by::before{content:"added by "}
+  .spectra-lt-member .who{flex:1;display:flex;align-items:center;gap:6px;min-width:0}
+  .spectra-lt-member .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .spectra-lt-actions{display:flex;gap:6px;flex:none}
+  .spectra-lt-role{flex:none;font-size:11px;font-weight:600;color:var(--spice-subtext,#b3b3b3)}
+  .spectra-lt-role.host{color:#e8c25a}
+  .spectra-lt-role.dj{color:var(--spice-button,#1db954)}
+  .spectra-lt-you{flex:none;font-size:11px;color:var(--spice-subtext,#b3b3b3)}
+  .spectra-lt-dj{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(var(--spice-rgb-button,29,185,84),.35)}
+  .spectra-lt-note{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:8px 10px;border-radius:8px;font-size:13px;background:rgba(240,180,76,.1);color:#f3cf8a}
+  .spectra-lt-more{border-top:1px solid rgba(var(--spice-rgb-text,255,255,255),.08);padding-top:10px}
+  .spectra-lt-more summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--spice-subtext,#b3b3b3);list-style-position:inside}
+  .spectra-lt-more summary:hover{color:var(--spice-text,#fff)}
+  .spectra-lt-more[open]{display:flex;flex-direction:column;gap:8px}
+  .spectra-lt-act{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:3px 6px}
+  .spectra-lt-seg{display:flex;gap:2px;padding:3px;border-radius:7px;background:rgba(var(--spice-rgb-text,255,255,255),.06)}
+  .spectra-lt-seg button{all:unset;cursor:pointer;flex:1;text-align:center;padding:7px 8px;border-radius:5px;font-size:12.5px;font-weight:600;color:var(--spice-subtext,#b3b3b3)}
+  .spectra-lt-seg button.on{background:rgba(var(--spice-rgb-text,255,255,255),.14);color:var(--spice-text,#fff)}
+  .spectra-lt-checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:4px 12px}
+  .spectra-lt-check{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:4px 0}
+  .spectra-lt-check input{accent-color:var(--spice-button,#1db954);width:16px;height:16px;margin:0}
+  .spectra-lt-tabs{display:flex;gap:2px;padding:3px;border-radius:999px;background:rgba(var(--spice-rgb-text,255,255,255),.06)}
+  .spectra-lt-tab{all:unset;cursor:pointer;flex:1;text-align:center;padding:7px 10px;border-radius:999px;font-weight:600;font-size:13px;color:var(--spice-subtext,#b3b3b3)}
+  .spectra-lt-tab.on{background:var(--spice-text,#fff);color:var(--spice-main,#121212)}
+  .spectra-lt-rooms{display:flex;flex-direction:column;gap:4px;max-height:320px;overflow:auto}
+  .spectra-lt-room{display:flex;align-items:center;gap:12px;padding:8px;border-radius:8px;background:rgba(var(--spice-rgb-text,255,255,255),.04)}
+  .spectra-lt-room:hover{background:rgba(var(--spice-rgb-text,255,255,255),.08)}
+  .spectra-lt-room > img,.spectra-lt-room > .art{width:48px;height:48px;border-radius:4px;object-fit:cover;flex:none;background:rgba(var(--spice-rgb-text,255,255,255),.1)}
+  .spectra-lt-room .info{flex:1;min-width:0}
+  .spectra-lt-room .sub.host{display:flex;align-items:center;gap:6px;margin:2px 0}
+  .spectra-lt-room .sub.host .spectra-lt-av{width:16px;height:16px;font-size:9px}
+  .spectra-lt-choice{all:unset;box-sizing:border-box;cursor:pointer;flex:1;min-width:150px;display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(var(--spice-rgb-text,255,255,255),.15)}
+  .spectra-lt-choice span{font-size:12px;color:var(--spice-subtext,#b3b3b3)}
+  .spectra-lt-choice.on{box-shadow:inset 0 0 0 2px var(--spice-button,#1db954);background:rgba(var(--spice-rgb-button,29,185,84),.07)}
+  .spectra-lt-status{margin:0;color:#f3cf8a;font-size:13px}
+  #spectra-lt-pill{all:unset;position:fixed;left:16px;bottom:104px;z-index:2147480000;cursor:pointer;display:flex;align-items:center;gap:8px;padding:7px 14px 7px 12px;border-radius:999px;font:600 12.5px/1.2 var(--encore-body-font-stack,system-ui,sans-serif);color:var(--spice-text,#fff);background:var(--spice-main-elevated,#242424);box-shadow:0 6px 18px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.08);pointer-events:auto;max-width:min(360px,calc(100vw - 32px));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #spectra-lt-pill:hover{background:var(--spice-highlight-elevated,#2a2a2a)}
+  #spectra-lt-pill i{flex:none;width:8px;height:8px;border-radius:50%;background:var(--spice-button,#1db954)}
+  #spectra-lt-pill.connecting i,#spectra-lt-pill.reconnecting i{background:#f0b44c;animation:spectra-lt-blink 1s ease-in-out infinite}
+  #spectra-lt-pill.offline i{background:#ff7070}
   #spectra-menu .label{padding:10px 12px 6px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--spice-subtext,#b3b3b3)}
   `;
 
@@ -1412,10 +1459,102 @@
   // 7. Extension loader
   // ------------------------------------------------------------------
 
+  // Extensions from the Spectra Store and My Library declare what they need (see
+  // shared/package.js). They run with their own copies of fetch, XMLHttpRequest,
+  // WebSocket, EventSource, localStorage and Spicetify that refuse anything they
+  // didn't ask for. Page JavaScript can't be fully sandboxed, so the store review
+  // also checks the code for ways around this. Spicetify-marketplace extensions
+  // (no declared permissions) run with full access, and the dashboard says so.
+  const guardBox = {};
+  function permissionGuards(script) {
+    const allow = new Set(script.permissions || []);
+    const name = String(script.name || "This extension");
+    const LABEL = { playback: "control playback", library: "change your library", account: "read your account", network: "connect to other sites", interface: "add to Spotify's interface", storage: "save settings" };
+    const deny = (perm, detail) => {
+      const e = new Error(`${name} didn't ask for permission to ${LABEL[perm]}${detail ? ` (${detail})` : ""}.`);
+      warn(e.message);
+      return e;
+    };
+    const spotifyHost = (u) => {
+      try {
+        const host = new URL(u, location.href).hostname;
+        return host === location.hostname || /(^|\.)(spotify\.com|scdn\.co|spotifycdn\.com)$/.test(host);
+      } catch { return true; }
+    };
+    const hostOf = (u) => { try { return new URL(u, location.href).hostname; } catch { return String(u); } };
+    const net = (u) => allow.has("network") || spotifyHost(u);
+
+    const fetchG = function (input, init) {
+      const u = typeof input === "string" ? input : input && input.url;
+      if (!net(u)) return Promise.reject(deny("network", hostOf(u)));
+      return window.fetch(input, init);
+    };
+    class XHR extends XMLHttpRequest {
+      open(method, u, ...rest) { if (!net(u)) throw deny("network", hostOf(u)); return super.open(method, u, ...rest); }
+    }
+    const wrapCtor = (Ctor) => Ctor && new Proxy(Ctor, { construct(t, args) { if (!net(args[0])) throw deny("network", hostOf(args[0])); return Reflect.construct(t, args); } });
+    const memory = new Map();
+    const memStore = { getItem: (k) => (memory.has(String(k)) ? memory.get(String(k)) : null), setItem: (k, v) => memory.set(String(k), String(v)),
+      removeItem: (k) => memory.delete(String(k)), clear: () => memory.clear(), key: (i) => [...memory.keys()][i] ?? null, get length() { return memory.size; } };
+    let warnedStorage = false;
+    const storageG = allow.has("storage") ? window.localStorage : new Proxy(memStore, { get(t, k) {
+      if (!warnedStorage) { warnedStorage = true; deny("storage", "settings are kept until Spotify reloads"); }
+      return Reflect.get(t, k);
+    } });
+
+    // Spicetify, minus what wasn't asked for.
+    const READ_ONLY_PLAYER = new Set(["data", "origin", "getProgress", "getProgressPercent", "getDuration", "isPlaying", "getShuffle", "getRepeat", "getHeart", "getVolume", "getMute", "addEventListener", "removeEventListener", "dispatchEvent", "formatTime"]);
+    const blockedObject = (perm, label) => new Proxy(function () {}, {
+      get(t, k) { if (k === Symbol.toPrimitive || k === "then") return undefined; throw deny(perm, `${label}.${String(k)}`); },
+      apply() { throw deny(perm, label); },
+      construct() { throw deny(perm, label); },
+    });
+    const guardPlatform = (P) => P && new Proxy(P, { get(t, k) {
+      if (["LibraryAPI", "PlaylistAPI", "RootlistAPI", "CollectionAPI", "EnhanceAPI", "LocalFilesAPI", "ShowAPI"].includes(k) && !allow.has("library")) return blockedObject("library", `Platform.${k}`);
+      if (["PlayerAPI", "PlaybackAPI"].includes(k) && !allow.has("playback")) return blockedObject("playback", `Platform.${k}`);
+      if (["UserAPI", "Session", "AuthorizationAPI"].includes(k) && !allow.has("account")) return blockedObject("account", `Platform.${k}`);
+      return Reflect.get(t, k);
+    } });
+    const S = window.Spicetify;
+    const spicetifyG = S && new Proxy(S, { get(t, k) {
+      const v = Reflect.get(t, k);
+      if (k === "Player" && !allow.has("playback")) return new Proxy(v, { get(pt, pk) {
+        if (READ_ONLY_PLAYER.has(pk)) { const x = Reflect.get(pt, pk); return typeof x === "function" ? x.bind(pt) : x; }
+        throw deny("playback", `Player.${String(pk)}`);
+      } });
+      if (k === "Platform") return guardPlatform(v);
+      if (k === "CosmosAsync" && v) return new Proxy(v, { get(ct, ck) {
+        if (["post", "put", "del", "patch"].includes(ck) && !allow.has("library")) return () => Promise.reject(deny("library", `CosmosAsync.${ck}`));
+        if (ck === "get" || ck === "request" || ck === "resolve") {
+          const fn = Reflect.get(ct, ck);
+          return (...a) => {
+            const url = String(ck === "get" ? a[0] : a[1] || "");
+            if (/sp:\/\/oauth|\/v1\/me\b/.test(url) && !allow.has("account")) return Promise.reject(deny("account", url));
+            if (ck !== "get" && !/^get$/i.test(String(a[0])) && !allow.has("library")) return Promise.reject(deny("library", `CosmosAsync.${ck}`));
+            return fn.apply(ct, a);
+          };
+        }
+        return Reflect.get(ct, ck);
+      } });
+      if (["Topbar", "Playbar", "ContextMenu", "Menu", "PopupModal", "Panel"].includes(k) && !allow.has("interface")) return blockedObject("interface", k);
+      if (k === "LocalStorage" && !allow.has("storage")) return { get: (key) => memStore.getItem(key), set: (key, val) => memStore.setItem(key, val), remove: (key) => memStore.removeItem(key), clear: () => memStore.clear() };
+      return v;
+    } });
+    return [fetchG, XHR, wrapCtor(window.WebSocket), wrapCtor(window.EventSource), storageG, spicetifyG];
+  }
+
   function runScript(script) {
     return new Promise((resolve) => {
       const tag = `spectra-ext/${String(script.name).replace(/[^\w.-]+/g, "_")}.js`;
-      const code = `try{\n${script.code}\n}catch(e){console.error("[Spectra] extension \\"${String(script.name).replace(/["\\]/g, "")}\\" crashed:",e)}\n//# sourceURL=${tag}`;
+      const label = String(script.name).replace(/["\\]/g, "");
+      let body = script.code;
+      if (Array.isArray(script.permissions)) {
+        const slot = "g" + Math.random().toString(36).slice(2);
+        guardBox[slot] = permissionGuards(script);
+        window.__spectraGuards = guardBox;
+        body = `(function(fetch,XMLHttpRequest,WebSocket,EventSource,localStorage,Spicetify){\n${script.code}\n}).apply(window,(function(g){var a=g["${slot}"];delete g["${slot}"];return a})(window.__spectraGuards));`;
+      }
+      const code = `try{\n${body}\n}catch(e){console.error("[Spectra] extension \\"${label}\\" crashed:",e)}\n//# sourceURL=${tag}`;
       // Prefer a blob: <script> (allowed by Spotify's CSP; real stack traces and module-like isolation).
       try {
         const url = URL.createObjectURL(new Blob([code], { type: "text/javascript" }));
@@ -1449,25 +1588,33 @@
   // ------------------------------------------------------------------
   // 7b. Listen Together
   //
-  // The host creates a room (public rooms show in the room browser, private
-  // ones need the code). Everyone who joins follows the host's Spotify: same
-  // song, same spot, play/pause and seeks. The host can make people DJs; a DJ's
-  // requests (queue a song, play a playlist, skip…) go through the server and
-  // run on the host's Spotify, so everyone hears them. Each person plays on
-  // their own account; Spectra's server (website/api/rooms.js) only relays
-  // what's playing and where.
+  // The host just uses Spotify. Spectra watches what plays (song, position,
+  // play/pause, shuffle, repeat and the queue) and keeps everyone in the room on
+  // the same song at the same spot, each on their own account. The host can make
+  // people DJs; a DJ also just uses Spotify: picking a song, pausing, skipping,
+  // seeking or adding to their queue goes to the room (as far as the host's DJ
+  // permissions allow) and runs on the host's Spotify, so everyone hears it.
+  // Spectra's server (website/api/rooms.js) relays state and orders requests.
+  // Names and pictures come from each person's Spotify account.
   // ------------------------------------------------------------------
 
   const Together = (() => {
     const STORE = "spectra-listen-together";
-    let session = null;          // { code, role: "host"|"guest", hostKey?, memberId, name }
+    const DRIFT_IGNORE = 1000;   // ms: under this, leave playback alone (seeking would be more noticeable than the gap)
+    const NUDGE_EVERY = 10000;   // ms: at most one drift correction this often while nothing changes
+    let session = null;          // { code, role: "host"|"guest", hostKey?, memberId }
     let room = null;             // last room info from the server
-    let me = null;               // { pid, dj } for guests
+    let me = null;               // { pid, dj, name, avatar }
+    let identity = null;         // { name, avatar } from this Spotify account, for display before joining
     let clockOffset = 0;         // server time − local time
+    let clockSamples = [];       // [{ rtt, off }]: the fastest round trips give the best offset
     let lastSeq = -1;            // last host state a guest applied
-    let pollTimer = null, hostTimer = null, pushTimer = null;
+    let pollTimer = null, hostTimer = null, pushTimer = null, watchTimer = null, barTimer = null;
     let polls = 0;               // to ask for the member list only every few polls
-    let lastPushed = null;       // { snap, at } for the host's seek detection
+    let failures = 0;
+    let conn = "offline";        // "connecting" | "connected" | "syncing" | "reconnecting" | "offline"
+    let lastPushed = null;       // { snap, at } for the host's change detection
+    let lastQueueKey = "";       // host: the queue as last sent
     let status = "";             // message shown in the panel
     let panelBody = null;        // the open panel, re-rendered on changes
     let tab = "browse";          // when not in a room: "browse" | "code" | "create"
@@ -1475,7 +1622,18 @@
     let loadingPublic = false;
     let browseError = "";
     let createVisibility = "public";
+    let createOnLeave = "transfer";
     let togetherButton = null;
+    let seenActivity = null;     // Set of activity ids already shown
+    let lastInputAt = 0;         // last click / key press in Spotify itself (not in Spectra's panel)
+    let lastSyncAt = 0;          // last time Spectra itself changed playback (following the room or running a request)
+    let lastNudgeAt = 0;
+    let lastHostChangeAt = 0;    // host: last change the host made with their own hands
+    let pendingDJ = null;        // DJ: { until, uri?, playing? } a change sent to the room, not echoed back yet
+    let djQueueSeen = null;      // DJ: Set of uris already in their own queue
+    let detached = false;        // listener: chose to play something else; caught up again when the room changes song
+    let lastUriSeen = "";
+    const addedBy = new Map();   // host: uri → who queued it
 
     const api = () => ((state.payload && state.payload.apiBase) || "https://usespectra.xyz") + "/api/rooms";
     const prettyCode = (c) => (c ? c.slice(0, 3) + "-" + c.slice(3) : "");
@@ -1484,34 +1642,118 @@
     const stored = (k) => { try { return localStorage.getItem(STORE + ":" + k) || ""; } catch { return ""; } };
     const canControl = () => !!session && (session.role === "host" || !!(me && me.dj));
     const isHost = () => !!session && session.role === "host";
+    const perms = () => (room && room.perms) || { play: true, queue: true, skip: true, pause: true, seek: true };
+    const allowed = (type) => isHost() || !!perms()[{ queue: "queue", play: "play", skip: "skip", back: "skip", pause: "pause", resume: "pause", seek: "seek" }[type]];
+    const serverNow = () => Date.now() + clockOffset;
+
+    // Clicks and keys in Spotify (not in our own panel) mean "the person did this", not "the song ended" or "Spectra synced".
+    const noteInput = (e) => { if (!(e.target && e.target.closest && e.target.closest("#spectra-modal, #spectra-lt-pill"))) lastInputAt = Date.now(); };
+    document.addEventListener("pointerdown", noteInput, true);
+    document.addEventListener("keydown", noteInput, true);
+    const recentInput = (ms = 4000) => Date.now() - lastInputAt < ms;
 
     async function call(method, body, query) {
       const url = api() + (query ? "?" + new URLSearchParams(query) : "");
+      const t0 = Date.now();
       const res = await originalFetch.call(window, url, method === "GET" ? { cache: "no-store" } : { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
+      const t1 = Date.now();
+      const now = data.now || (data.room && data.room.now);
+      if (now) {
+        // The server stamped `now` somewhere in the middle of the round trip.
+        clockSamples.push({ rtt: t1 - t0, off: now - (t0 + t1) / 2 });
+        clockSamples = clockSamples.slice(-8);
+        clockOffset = clockSamples.reduce((a, b) => (b.rtt < a.rtt ? b : a)).off;
+      }
       if (!res.ok) throw Object.assign(new Error(data.error || "Couldn't reach Spectra's server."), { status: res.status });
       return data;
     }
 
+    function setConn(c) {
+      if (conn === c) return;
+      conn = c;
+      render();
+    }
+    function connFailed(e) {
+      failures++;
+      setConn(!navigator.onLine || failures >= 3 ? "offline" : "reconnecting");
+      status = conn === "offline" ? "You're offline. Spectra keeps trying and catches up when you're back." : "";
+      render();
+    }
+    function connOk() {
+      const wasDown = failures > 0;
+      failures = 0;
+      if (status.startsWith("You're offline")) status = "";
+      if (conn !== "syncing") setConn("connected");
+      return wasDown;
+    }
+    const retryDelay = (base) => (failures ? Math.min(15000, base * (1 + failures)) : base);
+    window.addEventListener("online", () => { if (session) { clearTimeout(pollTimer); isHost() ? hostPoll() : guestPoll(); } });
+
     function noteRoom(r) {
       if (!r) return;
-      const members = r.members || (room && room.members) || [];
-      room = Object.assign({}, r, { members });
-      if (r.now) clockOffset = r.now - Date.now();
+      const keep = room || {};
+      room = Object.assign({}, r, {
+        members: r.members || keep.members || [],
+        activity: r.activity || keep.activity || [],
+        history: r.history || keep.history || [],
+      });
+      if (r.activity) showActivity(r.activity);
       render();
     }
 
-    async function defaultName() {
-      const saved = stored("name");
-      if (saved) return saved;
-      try {
-        const u = await state.platform?.UserAPI?.getUser?.();
-        if (u && u.displayName) return u.displayName;
-      } catch {}
-      return "";
+    /** New lines in the room's feed, as small notices (the host already sees its own DJ requests run). */
+    function showActivity(list) {
+      const fresh = [...list].reverse().filter((a) => !seenActivity || !seenActivity.has(a.id));
+      const first = !seenActivity;
+      seenActivity = seenActivity || new Set();
+      for (const a of fresh) {
+        seenActivity.add(a.id);
+        if (first || Date.now() + clockOffset - a.at > 30000) continue;
+        const command = ["queue", "play", "skip", "back", "pause", "resume"].includes(a.kind);
+        if (command && isHost()) continue;
+        if (me && me.name && a.text.startsWith(me.name + " ")) continue; // our own doing
+        showNotification(a.text);
+      }
     }
 
-    // ---- Spotify actions (used by the host, for its own clicks and for DJ requests)
+    // ---- who you are, from Spotify
+    async function spotifyProfile() {
+      try {
+        const u = await state.platform?.UserAPI?.getUser?.();
+        if (u) {
+          const imgs = (u.images || u.avatar && [u.avatar] || []).map((i) => (typeof i === "string" ? { url: i } : i)).filter((i) => i && i.url);
+          imgs.sort((a, b) => (a.width || 999) - (b.width || 999));
+          const img = imgs.find((i) => (i.width || 999) >= 64) || imgs[imgs.length - 1];
+          return { name: u.displayName || u.display_name || u.username || "", avatar: img ? img.url : "", id: u.username || "" };
+        }
+      } catch {}
+      return { name: "", avatar: "", id: "" };
+    }
+    /**
+     * What create/join send: the profile Spotify itself reports for this account (display
+     * name, picture, username). The server keeps the name and picture and only a hash of
+     * the username. No Spotify token ever leaves the page.
+     */
+    async function credentials() {
+      return { profile: await spotifyProfile() };
+    }
+
+    function avatar(person, size) {
+      const name = (person && person.name) || "?";
+      let hue = 0;
+      for (const ch of name) hue = (hue * 31 + ch.charCodeAt(0)) % 360;
+      const box = el("span", { class: "spectra-lt-av" + (size === "lg" ? " lg" : ""), style: `--h:${hue}`, "aria-hidden": "true" },
+        name.replace(/[^\p{L}\p{N}]/gu, "").slice(0, 1).toUpperCase() || "?");
+      if (person && person.avatar) {
+        const img = el("img", { src: person.avatar, alt: "", referrerpolicy: "no-referrer", loading: "lazy" });
+        img.addEventListener("error", () => img.remove());
+        box.append(img);
+      }
+      return box;
+    }
+
+    // ---- Spotify actions (used by the host, for DJ requests)
     async function addToQueue(uri) {
       const a = playerAPI();
       if (!a || typeof a.addToQueue !== "function") throw new Error("This Spotify version can't add to the queue from Spectra.");
@@ -1521,35 +1763,99 @@
     const queueable = (uri) => ["track", "episode"].includes(typeOf(uri));
     const playable = (uri) => ["track", "episode", "album", "playlist", "artist", "show"].includes(typeOf(uri));
 
+    /** Play a song, inside its album or playlist when we know it, so "next" carries on from there. */
+    async function playInContext(uri, context, position) {
+      const opts = position != null ? { seekTo: Math.round(position) } : {};
+      if (context && context !== uri) {
+        try { await Player.playUri(context, {}, Object.assign({ skipTo: { uri } }, opts)); return; } catch {}
+      }
+      await Player.playUri(uri, {}, opts);
+    }
+
     async function runCommand(cmd) {
       const who = cmd.from || "A DJ";
       const what = cmd.title ? `“${cmd.title}”` : { track: "a song", episode: "an episode", album: "an album", playlist: "a playlist", artist: "an artist", show: "a show" }[typeOf(cmd.uri)] || "something";
+      // The host changed the music with their own hands after this request was sent: the host's choice wins.
+      if (cmd.type !== "queue" && cmd.at && cmd.at - clockOffset < lastHostChangeAt) {
+        showNotification(`${who}'s request came in after you changed the music, so it was skipped.`);
+        return;
+      }
+      lastSyncAt = Date.now();
       try {
         switch (cmd.type) {
-          case "queue": await addToQueue(cmd.uri); showNotification(`${who} added ${what} to the queue`); break;
-          case "play": await Player.playUri(cmd.uri); showNotification(`${who} started ${what}`); break;
+          case "queue": await addToQueue(cmd.uri); addedBy.set(cmd.uri, who); showNotification(`${who} added ${what} to the queue`); break;
+          case "play":
+            await playInContext(cmd.uri, cmd.context, cmd.position);
+            showNotification(`${who} played ${what}`);
+            break;
+          case "seek": await Player.seek(cmd.position); break;
           case "skip": await Player.next(); showNotification(`${who} skipped the song`); break;
           case "back": await Player.back(); showNotification(`${who} went back a song`); break;
           case "pause": await Player.pause(); showNotification(`${who} paused`); break;
           case "resume": await Player.play(); showNotification(`${who} pressed play`); break;
         }
+        if (["play", "skip", "back"].includes(cmd.type)) changedBy = { name: who, until: Date.now() + 8000 };
       } catch (e) {
         showNotification(`Couldn't do what ${who} asked: ${e.message || e}`, true);
       }
+      lastSyncAt = Date.now();
       schedulePush(400);
     }
+    let changedBy = null; // host: the DJ behind the next song change, for "played by"
 
-    /** A control from the panel or the right-click menu: run it here if we're the host, otherwise ask the host. */
-    async function control(cmd) {
+    /** A control from the panel or the right-click menu: run it here if we're the host, otherwise send it to the room. */
+    async function control(cmd, quiet) {
       if (!session) return;
       if (isHost()) return runCommand(Object.assign({ from: "You" }, cmd));
+      if (!allowed(cmd.type)) {
+        if (!quiet) showNotification("The host hasn't allowed DJs to do that in this room.", true);
+        return false;
+      }
       try {
         await call("POST", { action: "command", code: session.code, memberId: session.memberId, cmd });
-        const done = { queue: "Added to the room's queue", play: "Sent. It'll start in a moment", skip: "Skipping…", back: "Going back…", pause: "Pausing…", resume: "Playing…" }[cmd.type];
-        showNotification(done || "Sent to the host");
+        if (!quiet) {
+          const done = { queue: "Added to the room's queue", play: "Playing for the room in a moment", skip: "Skipping…", back: "Going back…", pause: "Pausing…", resume: "Playing…" }[cmd.type];
+          if (done) showNotification(done);
+        }
+        return true;
       } catch (e) {
         showNotification(e.message, true);
+        return false;
       }
+    }
+
+    // ---- the queue, read from Spotify (shapes differ between Spotify versions)
+    async function readQueue() {
+      const a = playerAPI();
+      let items = [];
+      try {
+        let q = a && typeof a.getQueue === "function" ? a.getQueue() : null;
+        if (q && typeof q.then === "function") q = await q;
+        if (q) items = [].concat(q.queued || [], q.nextUp || [], q.nextTracks || []);
+      } catch {}
+      if (!items.length) {
+        try {
+          const q = a && a._queue && (a._queue._queue || a._queue._state);
+          if (q) items = [].concat(q.nextTracks || q.queued || []);
+        } catch {}
+      }
+      if (!items.length) {
+        const s = currentState();
+        items = s.nextItems || s.next_tracks || [];
+      }
+      return items.map((it) => {
+        const md = it.metadata || {};
+        const uri = it.uri || "";
+        const artists = (it.artists || []).map((x) => x && x.name).filter(Boolean).join(", ");
+        const imgs = it.images || (it.album && it.album.images) || [];
+        return {
+          uri,
+          title: it.name || md.title || "",
+          artist: artists || md.artist_name || "",
+          art: (imgs[0] && imgs[0].url) || md.image_url || md.image_small_url || "",
+          queued: it.provider === "queue" || md.is_queued === "true",
+        };
+      }).filter((t) => /^spotify:(track|episode):/.test(t.uri)).slice(0, 10);
     }
 
     // ---- host: publish what's playing
@@ -1557,6 +1863,7 @@
       const s = currentState();
       const it = s.item || {};
       const md = it.metadata || {};
+      const ctx = s.context && s.context.uri;
       return {
         uri: it.uri || "",
         title: md.title || it.name || "",
@@ -1565,6 +1872,10 @@
         duration: s.duration || 0,
         position: Math.round(currentProgress(s)),
         playing: !s.isPaused,
+        shuffle: !!(s.shuffle || s.smartShuffle),
+        repeat: typeof s.repeat === "number" ? s.repeat : 0,
+        // Only when the song comes from that album or playlist (not from the queue), so guests can play it in place.
+        context: ctx && it.provider !== "queue" && /^spotify:(album|playlist|artist|show|user:[^:]+:collection)/.test(ctx) ? ctx : "",
       };
     }
 
@@ -1575,112 +1886,222 @@
 
     async function push() {
       if (!isHost()) return;
+      const s = session;
       const snap = snapshot();
+      const changed = !lastPushed || lastPushed.snap.uri !== snap.uri;
+      if (changed) snap.by = changedBy && Date.now() < changedBy.until && changedBy.name !== "You" ? changedBy.name : "";
+      else snap.by = (room && room.state && room.state.by) || "";
+      if (changed) changedBy = null;
+      const body = { action: "update", code: s.code, hostKey: s.hostKey, state: snap, full: false };
+      const queue = await readQueue().catch(() => []);
+      const hostName = (me && me.name) || "the host";
+      const q = queue.map((t) => ({ uri: t.uri, title: t.title, artist: t.artist, art: t.art, by: addedBy.get(t.uri) || (t.queued ? hostName : "") }));
+      const qKey = JSON.stringify(q);
+      if (qKey !== lastQueueKey) body.queue = q;
       try {
-        const r = await call("POST", { action: "update", code: session.code, hostKey: session.hostKey, state: snap, full: false });
+        await call("POST", body);
+        if (session !== s) return;
         lastPushed = { snap, at: Date.now() };
-        if (room) room.state = Object.assign({}, room.state, snap);
-        if (status.startsWith("Connection")) status = "";
+        if (body.queue) lastQueueKey = qKey;
+        if (room) { room.state = Object.assign({}, room.state, snap); room.queue = q; }
+        connOk();
         render();
       } catch (e) {
-        if (e.status === 404 || e.status === 403) return end("The room has ended.");
-        status = e.message; render();
+        if (session !== s) return;
+        if (e.status === 404) return end("The room has ended.");
+        if (e.status === 403) return end(e.message);
+        connFailed(e);
       }
     }
 
+    let queueTick = 0;
     function hostTick() {
-      // Catch seeks: where the song is now vs. where it should be since the last push.
       if (!lastPushed) return schedulePush(0);
       const s = currentState(), now = Date.now();
       const p = lastPushed.snap;
       const expected = p.playing ? p.position + (now - lastPushed.at) : p.position;
       const uri = (s.item && s.item.uri) || "";
-      if (uri !== p.uri || !s.isPaused !== p.playing || Math.abs(currentProgress(s) - expected) > 2500 || now - lastPushed.at > 10000) schedulePush(0);
+      const moved = uri !== p.uri || !s.isPaused !== p.playing || Math.abs(currentProgress(s) - expected) > 2000;
+      if (moved && now - lastSyncAt > 2500 && recentInput(5000)) lastHostChangeAt = now;
+      if (moved || now - lastPushed.at > 10000) return schedulePush(0);
+      // Queue edits don't fire any player event: look every few seconds.
+      if (++queueTick % 3 === 0) readQueue().then((queue) => {
+        const hostName = (me && me.name) || "the host";
+        const key = JSON.stringify(queue.map((t) => ({ uri: t.uri, title: t.title, artist: t.artist, art: t.art, by: addedBy.get(t.uri) || (t.queued ? hostName : "") })));
+        if (key !== lastQueueKey) schedulePush(0);
+      }).catch(() => {});
     }
 
     async function hostPoll() {
       if (!isHost()) return;
       const s = session;
       try {
-        const r = await call("POST", { action: "host-poll", code: session.code, hostKey: session.hostKey, full: polls++ % 3 === 0 });
+        const r = await call("POST", { action: "host-poll", code: s.code, hostKey: s.hostKey, full: polls++ % 3 === 0 });
         if (session !== s) return;
+        connOk();
         noteRoom(r.room);
         for (const cmd of r.commands || []) await runCommand(cmd);
       } catch (e) {
-        if (e.status === 404 || e.status === 403) return end("The room has ended.");
-        status = "Connection trouble, retrying…"; render();
+        if (session !== s) return;
+        if (e.status === 404) return end("The room has ended.");
+        if (e.status === 403) return end(e.message);
+        connFailed(e);
       }
       // Check quickly while there are DJs who might ask for something; otherwise take it easy.
-      if (session === s) pollTimer = setTimeout(hostPoll, room && room.djCount ? 2000 : 8000);
+      if (session === s) pollTimer = setTimeout(hostPoll, retryDelay(room && room.djCount ? 2000 : 8000));
     }
 
     // ---- guests: follow the host
     function expectedPosition(st) {
       if (!st.playing) return st.position;
-      return Math.min(st.position + (Date.now() + clockOffset - st.at), st.duration || Infinity);
+      return Math.min(st.position + (serverNow() - st.at), st.duration || Infinity);
     }
 
     async function follow(force) {
       const st = room && room.state;
       if (!st || !st.uri) return;
       if (!playerAPI()) { status = "Waiting for Spotify to finish loading…"; render(); return; }
+      // A DJ's own change is on its way to the room: don't pull them back meanwhile.
+      if (pendingDJ && !force) {
+        const echoed = st.seq !== lastSeq && (!pendingDJ.uri || st.uri === pendingDJ.uri) && (pendingDJ.playing == null || st.playing === pendingDJ.playing);
+        if (echoed || Date.now() > pendingDJ.until) pendingDJ = null;
+        if (pendingDJ) return;
+        if (echoed) { lastSeq = st.seq; return; }
+      }
       const s = currentState();
       const myUri = (s.item && s.item.uri) || "";
-      const fresh = force || st.seq !== lastSeq;
+      // A DJ who just clicked something: djWatch decides whether it goes to the room.
+      if (!force && me && me.dj && recentInput(2500)) return;
+      const seqChanged = st.seq !== lastSeq;
       lastSeq = st.seq;
+      const newSong = st.uri !== lastUriSeen;
+      lastUriSeen = st.uri;
+      if (force || newSong) detached = false;
+      // Listening to something else by choice (not because a song ended on its own): leave them be until the room moves on.
+      if (!detached && !force && !seqChanged && myUri && myUri !== st.uri && recentInput(6000) && !(me && me.dj)) detached = true;
+      if (detached) { render(); return; }
+      const fresh = force || seqChanged;
+      const off = () => Player.getProgress() - expectedPosition(room.state);
       try {
-        if (fresh) {
+        if (fresh || myUri !== st.uri) {
           if (myUri !== st.uri) {
-            await Player.playUri(st.uri, {}, { seekTo: Math.round(expectedPosition(st)) });
-            setTimeout(() => {
+            setConn("syncing");
+            lastSyncAt = Date.now();
+            await playInContext(st.uri, st.context, expectedPosition(st));
+            setTimeout(async () => {
               if (!session || !room) return;
               const now = room.state;
-              if (Math.abs(Player.getProgress() - expectedPosition(now)) > 1500) Player.seek(Math.round(expectedPosition(now)));
-              if (!now.playing && Player.isPlaying()) Player.pause();
+              const cur = (currentState().item || {}).uri;
+              lastSyncAt = Date.now();
+              if (cur !== now.uri) await Player.playUri(now.uri, {}, { seekTo: Math.round(expectedPosition(now)) });
+              else if (Math.abs(off()) > DRIFT_IGNORE) await Player.seek(Math.round(expectedPosition(now)));
+              if (!now.playing && Player.isPlaying()) await Player.pause();
+              if (conn === "syncing") setConn("connected");
             }, 1500);
           } else {
-            if (Math.abs(Player.getProgress() - expectedPosition(st)) > 1500) await Player.seek(Math.round(expectedPosition(st)));
+            const needSeek = Math.abs(off()) > DRIFT_IGNORE;
+            const needPlay = st.playing !== Player.isPlaying();
+            if (needSeek || needPlay) { setConn("syncing"); lastSyncAt = Date.now(); }
+            if (needSeek) await Player.seek(Math.round(expectedPosition(st)));
             if (st.playing && !Player.isPlaying()) await Player.play();
             if (!st.playing && Player.isPlaying()) await Player.pause();
+            if (conn === "syncing") setTimeout(() => { if (conn === "syncing") setConn("connected"); }, 600);
           }
-        } else if (st.playing && myUri === st.uri && Player.isPlaying() && Math.abs(Player.getProgress() - expectedPosition(st)) > 3000) {
-          // Drifted while both are playing: nudge back. (If the guest paused on purpose, leave them be.)
+        } else if (st.playing && myUri === st.uri && Player.isPlaying() && Math.abs(off()) > DRIFT_IGNORE && Date.now() - lastNudgeAt > NUDGE_EVERY && !recentInput(6000)) {
+          // Drifted while both are playing: one correcting jump. (If someone paused on purpose, leave them be.)
+          lastNudgeAt = lastSyncAt = Date.now();
           await Player.seek(Math.round(expectedPosition(st)));
         }
         if (status.startsWith("Waiting") || status.startsWith("Couldn't play")) status = "";
       } catch (e) {
         status = "Couldn't play that song here. It may not be available in your country.";
+        if (conn === "syncing") setConn("connected");
       }
       render();
+    }
+
+    /** DJs: what they do in their own Spotify goes to the room. */
+    async function djWatch() {
+      if (!session || isHost() || !(me && me.dj) || !room || !room.state) return;
+      const st = room.state;
+      const s = currentState();
+      const uri = (s.item && s.item.uri) || "";
+      const playing = !s.isPaused;
+      // Only things the DJ did themselves: not Spectra syncing, not a song ending on its own.
+      if (Date.now() - lastSyncAt < 2500 || !recentInput(4000) || pendingDJ) return watchQueue();
+      if (uri && uri !== st.uri && queueable(uri)) {
+        const ctx = s.context && s.context.uri;
+        const title = (s.item.metadata && s.item.metadata.title) || s.item.name || "";
+        pendingDJ = { until: Date.now() + 7000, uri };
+        if (!(await control({ type: "play", uri, title, context: ctx && ctx !== uri ? ctx : undefined, position: Math.round(currentProgress(s)) }, true))) {
+          pendingDJ = null; lastSyncAt = Date.now(); follow(true);
+        }
+        return;
+      }
+      if (uri === st.uri && playing !== st.playing) {
+        pendingDJ = { until: Date.now() + 5000, playing };
+        if (!(await control({ type: playing ? "resume" : "pause" }, true))) { pendingDJ = null; lastSyncAt = Date.now(); follow(true); }
+        return;
+      }
+      if (uri === st.uri && playing && st.playing && Math.abs(currentProgress(s) - expectedPosition(st)) > 3000) {
+        pendingDJ = { until: Date.now() + 5000 };
+        if (!(await control({ type: "seek", position: Math.round(currentProgress(s)) }, true))) { pendingDJ = null; lastSyncAt = Date.now(); follow(true); }
+        return;
+      }
+      watchQueue();
+    }
+    let queueWatchAt = 0;
+    async function watchQueue() {
+      if (Date.now() - queueWatchAt < 2000) return;
+      queueWatchAt = Date.now();
+      const queued = (await readQueue().catch(() => [])).filter((t) => t.queued);
+      const uris = new Set(queued.map((t) => t.uri));
+      if (djQueueSeen && recentInput(6000)) {
+        for (const t of queued) if (!djQueueSeen.has(t.uri)) control({ type: "queue", uri: t.uri, title: t.title }, false);
+      }
+      djQueueSeen = uris;
     }
 
     async function guestPoll() {
       if (!session || isHost()) return;
       const s = session;
       try {
-        const q = { code: session.code, member: session.memberId };
+        const q = { code: s.code, member: s.memberId };
         if (polls++ % 3 === 0) q.full = "1";
         const r = await call("GET", null, q);
         if (session !== s) return;
+        const recovered = connOk();
+        if (r.promoted && r.promoted.hostKey) return becomeHost(r.promoted.hostKey, r.room);
         const wasDj = !!(me && me.dj);
-        me = r.me || me;
-        if (me && me.dj && !wasDj && polls > 1) showNotification("The host made you a DJ. You can add songs and play playlists for the room.");
-        if (me && !me.dj && wasDj) showNotification("You're no longer a DJ in this room.");
+        me = Object.assign({}, me, r.me || {});
+        if (me.dj && !wasDj && polls > 1) showNotification("You're a DJ now. Just use Spotify: what you play, pause or skip plays for everyone.");
+        if (!me.dj && wasDj) showNotification("You're no longer a DJ in this room.");
+        if (me.dj && !wasDj) djQueueSeen = null;
         noteRoom(r.room);
-        follow(false);
+        follow(recovered); // after a dropout, catch up with whatever the room is doing now
       } catch (e) {
+        if (session !== s) return;
         if (e.status === 404) return end("The room has ended.");
-        if (e.status === 410) return end(e.message);
-        status = "Connection trouble, retrying…"; render();
+        if (e.status === 410 || e.status === 403) return end(e.message);
+        connFailed(e);
       }
-      if (session === s) pollTimer = setTimeout(guestPoll, 3000);
+      if (session === s) pollTimer = setTimeout(guestPoll, retryDelay(3000));
+    }
+
+    function becomeHost(hostKey, r) {
+      session = Object.assign({}, session, { role: "host", hostKey });
+      lastPushed = null; lastQueueKey = "";
+      noteRoom(r);
+      start();
+      showNotification("You're the host now. Just play music in Spotify and the room follows you.");
     }
 
     // ---- lifecycle
     function start() {
       stopTimers();
       save();
-      polls = 0;
+      polls = 0; failures = 0;
+      setConn("connecting");
       if (isHost()) {
         Player.addEventListener("songchange", onHostChange);
         Player.addEventListener("onplaypause", onHostChange);
@@ -1690,21 +2111,24 @@
       } else {
         follow(true);
         guestPoll();
+        watchTimer = setInterval(djWatch, 1000);
       }
       render();
     }
     function onHostChange() { schedulePush(150); }
 
     function stopTimers() {
-      clearTimeout(pollTimer); clearInterval(hostTimer); clearTimeout(pushTimer);
-      pollTimer = hostTimer = pushTimer = null;
+      clearTimeout(pollTimer); clearInterval(hostTimer); clearTimeout(pushTimer); clearInterval(watchTimer);
+      pollTimer = hostTimer = pushTimer = watchTimer = null;
       Player.removeEventListener("songchange", onHostChange);
       Player.removeEventListener("onplaypause", onHostChange);
     }
 
     function end(message) {
       stopTimers();
-      session = null; room = null; me = null; lastSeq = -1; lastPushed = null;
+      session = null; room = null; me = null; lastSeq = -1; lastPushed = null; lastQueueKey = "";
+      pendingDJ = null; djQueueSeen = null; seenActivity = null; addedBy.clear(); detached = false; lastUriSeen = "";
+      conn = "offline";
       save();
       status = message || "";
       tab = "browse"; publicRooms = null;
@@ -1712,22 +2136,23 @@
       if (message) showNotification(message);
     }
 
-    async function create(name, roomName, visibility) {
-      status = "Creating a room…"; render();
+    async function create(roomName, visibility, onHostLeave) {
+      status = "Opening your room…"; render();
       try {
-        const r = await call("POST", { action: "create", name, roomName, visibility });
-        session = { code: r.code, role: "host", hostKey: r.hostKey, memberId: r.memberId, name };
+        const r = await call("POST", Object.assign({ action: "create", roomName, visibility, onHostLeave }, await credentials()));
+        session = { code: r.code, role: "host", hostKey: r.hostKey, memberId: r.memberId };
+        me = Object.assign({ dj: false }, r.me);
         status = "";
         noteRoom(r.room);
         start();
       } catch (e) { status = e.message; render(); }
     }
 
-    async function join(code, name) {
+    async function join(code) {
       status = "Joining…"; render();
       try {
-        const r = await call("POST", { action: "join", code, name });
-        session = { code: r.room.code, role: "guest", memberId: r.memberId, name };
+        const r = await call("POST", Object.assign({ action: "join", code }, await credentials()));
+        session = { code: r.room.code, role: "guest", memberId: r.memberId };
         me = r.me || null;
         status = "";
         lastSeq = -1;
@@ -1736,10 +2161,17 @@
       } catch (e) { status = e.message; render(); }
     }
 
-    async function leave() {
+    /** Leave. For the host: hand the room over if it's set to, unless `endForAll`. */
+    async function leave(endForAll) {
       const s = session;
+      const handover = isHost() && room && room.onHostLeave === "transfer" && !endForAll;
       end("");
-      if (s) call("POST", { action: "leave", code: s.code, memberId: s.memberId, hostKey: s.hostKey }).catch(() => {});
+      if (!s) return;
+      try {
+        const r = await call("POST", { action: "leave", code: s.code, memberId: s.memberId, hostKey: s.hostKey, end: !!endForAll });
+        if (handover && r.newHost) showNotification(`You left. ${r.newHost} is hosting now.`);
+        else if (s.role === "host") showNotification("Room ended.");
+      } catch {}
     }
 
     async function hostAction(body) {
@@ -1761,50 +2193,92 @@
       render();
     }
 
-    /** Pick up an existing session after Spotify reloads. */
+    /** Pick up an existing session after Spotify reloads: fetch the latest room state, then carry on. */
     function resume() {
       if (session) return;
       try { session = JSON.parse(localStorage.getItem(STORE) || "null"); } catch { session = null; }
       if (!session || !session.code) { session = null; return; }
+      setConn("connecting");
       const q = isHost() ? { code: session.code } : { code: session.code, member: session.memberId, full: "1" };
-      call("GET", null, q).then((r) => { me = r.me || null; noteRoom(r.room); start(); })
-        .catch((e) => { if (e.status === 404 || e.status === 410) end(""); else session = null; });
+      call("GET", null, q).then(async (r) => {
+        if (r.promoted && r.promoted.hostKey) { session.role = "host"; session.hostKey = r.promoted.hostKey; }
+        me = Object.assign({}, r.me || {}, await spotifyProfile().catch(() => ({})));
+        noteRoom(r.room);
+        start();
+      }).catch((e) => { if (e.status === 404 || e.status === 410 || e.status === 403) end(""); else { session = null; conn = "offline"; } });
     }
 
-    // ---- right-click menu: "Add to room queue" / "Play in room" for the host and DJs
+    // ---- right-click menu: for the host and DJs
     new ContextMenuItem("Add to Listen Together queue", (uris) => control({ type: "queue", uri: uris[0] }),
-      (uris) => canControl() && uris.length === 1 && queueable(uris[0])).register();
+      (uris) => canControl() && allowed("queue") && uris.length === 1 && queueable(uris[0])).register();
     new ContextMenuItem("Play in Listen Together room", (uris) => control({ type: "play", uri: uris[0] }),
-      (uris) => canControl() && uris.length === 1 && playable(uris[0])).register();
+      (uris) => canControl() && allowed("play") && uris.length === 1 && playable(uris[0])).register();
 
     // ---- UI
     function button(label, onClick, cls, title) {
       return el("button", { class: "spectra-lt-btn " + (cls || ""), onclick: onClick, title: title || null }, label);
     }
+    const fmt = (ms) => Player.formatTime(Math.max(0, ms || 0));
+    const CONN = {
+      connecting: ["warn", "Connecting…"], connected: ["ok", "Connected"], syncing: ["ok", "Syncing…"],
+      reconnecting: ["warn", "Reconnecting…"], offline: ["bad", "Offline"],
+    };
+    const connBadge = () => { const [cls, label] = CONN[conn] || CONN.offline; return el("span", { class: "spectra-lt-conn " + cls }, el("i"), label); };
 
-    function nameField() {
-      const name = el("input", { class: "spectra-lt-input", placeholder: "Your name", maxlength: "32", value: panelBody.dataset.name || "" });
-      name.addEventListener("input", () => { panelBody.dataset.name = name.value; store("name", name.value.trim()); });
-      return name;
+    function identityRow() {
+      const who = identity || { name: "", avatar: "" };
+      return el("div", { class: "spectra-lt-me" }, avatar(who),
+        el("div", {}, el("strong", {}, who.name || "Your Spotify account"),
+          el("div", { class: "sub" }, "Your name and picture come from Spotify.")));
     }
-    const nameVal = () => (panelBody.dataset.name || "").trim() || "Listener";
 
     function nowPlaying() {
       const st = room && room.state;
-      if (!st || !st.uri) return el("div", { class: "spectra-lt-np empty" }, isHost() ? "Play something and everyone will hear it." : "Waiting for the host to play something…");
+      if (!st || !st.uri) return el("div", { class: "spectra-lt-np empty" }, isHost() ? "Play something in Spotify and everyone hears it." : "Waiting for the host to play something…");
+      const pos = expectedPosition(st);
+      const bits = [st.artist || ""];
+      if (st.by) bits.push(`played by ${st.by}`);
       return el("div", { class: "spectra-lt-np" },
         st.art ? el("img", { src: st.art, alt: "" }) : el("div", { class: "art" }),
-        el("div", {}, el("strong", {}, st.title || "Unknown"), el("div", { class: "sub" }, (st.artist || "") + (st.playing ? "" : " · paused"))));
+        el("div", { class: "grow" },
+          el("div", { class: "spectra-lt-np-top" }, el("strong", {}, st.title || "Unknown"), st.playing ? null : el("span", { class: "spectra-lt-tag" }, "Paused")),
+          el("div", { class: "sub" }, bits.filter(Boolean).join(" · ")),
+          el("div", { class: "spectra-lt-bar", role: "progressbar", "aria-label": "Song progress", "aria-valuemin": "0", "aria-valuemax": String(Math.round((st.duration || 0) / 1000)), "aria-valuenow": String(Math.round(pos / 1000)) },
+            el("i", { style: `width:${st.duration ? Math.min(100, (pos / st.duration) * 100).toFixed(2) : 0}%` })),
+          el("div", { class: "spectra-lt-times" }, el("span", { "data-pos": "" }, fmt(pos)),
+            el("span", {}, [st.shuffle ? "Shuffle" : "", st.repeat === 2 ? "Repeat one" : st.repeat === 1 ? "Repeat" : ""].filter(Boolean).join(" · ")),
+            el("span", {}, fmt(st.duration)))));
+    }
+
+    /** Keeps the progress bar moving between polls, without rebuilding the panel. */
+    function tickBar() {
+      if (!panelBody || !panelBody.isConnected || !room || !room.state || !room.state.uri) return;
+      const st = room.state, pos = expectedPosition(st);
+      const bar = panelBody.querySelector(".spectra-lt-bar i"), t = panelBody.querySelector("[data-pos]");
+      if (bar && st.duration) bar.style.width = Math.min(100, (pos / st.duration) * 100).toFixed(2) + "%";
+      if (t) t.textContent = fmt(pos);
+    }
+
+    function upNext() {
+      const q = (room && room.queue) || [];
+      if (!q.length) return null;
+      return el("div", { class: "spectra-lt-section" },
+        el("div", { class: "spectra-lt-label" }, "Up next"),
+        el("div", { class: "spectra-lt-list" }, ...q.slice(0, 5).map((t) => el("div", { class: "spectra-lt-track" },
+          t.art ? el("img", { src: t.art, alt: "" }) : el("div", { class: "art" }),
+          el("div", { class: "grow" }, el("div", { class: "t" }, t.title || "Unknown"), el("div", { class: "sub" }, t.artist || "")),
+          t.by ? el("span", { class: "spectra-lt-by" }, t.by === ((me && me.name) || "") ? "you" : t.by) : null))),
+        q.length > 5 ? el("div", { class: "sub" }, `and ${q.length - 5} more`) : null);
     }
 
     function memberRows() {
       const ms = (room && room.members) || [];
       const rows = ms.map((m) => {
-        const badges = [m.host ? el("span", { class: "spectra-lt-badge host" }, "Host") : null, m.dj ? el("span", { class: "spectra-lt-badge dj" }, "DJ") : null,
-          me && m.pid === me.pid ? el("span", { class: "spectra-lt-badge you" }, "You") : null];
+        const role = m.host ? el("span", { class: "spectra-lt-role host" }, "Host") : m.dj ? el("span", { class: "spectra-lt-role dj" }, "DJ") : null;
+        const you = me && m.pid === me.pid ? el("span", { class: "spectra-lt-you" }, "you") : null;
         const actions = isHost() && !m.host ? el("div", { class: "spectra-lt-actions" },
-          button(m.dj ? "Remove DJ" : "Make DJ", () => hostAction({ action: "set-dj", pid: m.pid, dj: !m.dj }), m.dj ? "small" : "small accent",
-            m.dj ? "Stop them controlling the music" : "Let them add songs, play playlists, skip and pause"),
+          button(m.dj ? "Remove DJ" : "Make DJ", () => hostAction({ action: "set-dj", pid: m.pid, dj: !m.dj }), "small",
+            m.dj ? "Stop them changing the music" : "Let them change the music from their own Spotify"),
           (() => {
             const b = button("Remove", () => {
               if (b.dataset.sure) return hostAction({ action: "kick", pid: m.pid });
@@ -1813,41 +2287,90 @@
             }, "small danger", `Remove ${m.name} from the room`);
             return b;
           })()) : null;
-        return el("div", { class: "spectra-lt-member" }, el("span", { class: "who" }, m.name, ...badges), actions);
+        return el("div", { class: "spectra-lt-member" }, avatar(m), el("span", { class: "who" }, el("span", { class: "n" }, m.name), role, you), actions);
       });
-      return el("div", { class: "spectra-lt-members" }, el("div", { class: "spectra-lt-label" }, `In the room · ${ms.length}`), ...rows);
+      return el("div", { class: "spectra-lt-section" },
+        el("div", { class: "spectra-lt-label" }, `In the room · ${ms.length}`),
+        el("div", { class: "spectra-lt-list" }, ...rows));
     }
 
     function djPanel() {
-      const link = el("input", { class: "spectra-lt-input", placeholder: "Paste a Spotify link: song, album, playlist or artist", autocomplete: "off", spellcheck: "false" });
+      const p = perms();
+      const link = el("input", { class: "spectra-lt-input", placeholder: "Or paste a Spotify link", "data-k": "dj-link", autocomplete: "off", spellcheck: "false" });
       const parse = () => {
         const u = SpectraURI.from(link.value.trim());
         if (!u) { showNotification("That isn't a Spotify link. Copy one with Share → Copy link.", true); return null; }
         return u.toURI();
       };
       const st = (room && room.state) || {};
+      const can = isHost() ? { play: 1, queue: 1, skip: 1, pause: 1 } : p;
+      const list = [p.play && "play songs", p.pause && "pause", p.skip && "skip", p.seek && "seek", p.queue && "add to the queue"].filter(Boolean);
       return el("div", { class: "spectra-lt-dj" },
         el("div", { class: "spectra-lt-label" }, isHost() ? "Quick controls" : "You're a DJ"),
-        el("p", { class: "spectra-lt-intro" }, "Right-click any song, album or playlist in Spotify and pick “Add to Listen Together queue” or “Play in Listen Together room”, or paste a link here."),
-        link,
-        el("div", { class: "spectra-lt-row" },
-          button("Add to queue", () => { const u = parse(); if (!u) return; if (!queueable(u)) return showNotification("Only songs and episodes can go in the queue. Use Play now for albums and playlists.", true); control({ type: "queue", uri: u }); link.value = ""; }),
-          button("Play now", () => { const u = parse(); if (u) { control({ type: "play", uri: u }); link.value = ""; } })),
-        el("div", { class: "spectra-lt-row" },
-          button("Back", () => control({ type: "back" }), "small"),
-          button(st.playing ? "Pause" : "Play", () => control({ type: st.playing ? "pause" : "resume" }), "small"),
-          button("Skip", () => control({ type: "skip" }), "small")));
+        isHost() ? null : el("p", { class: "spectra-lt-hint" }, list.length
+          ? `Just use Spotify. You can ${list.join(", ").replace(/, ([^,]*)$/, " and $1")}, and the room follows you.`
+          : "The host hasn't turned on any DJ controls yet."),
+        can.play || can.queue ? el("div", { class: "spectra-lt-row" }, link,
+          can.queue ? button("Queue", () => { const u = parse(); if (!u) return; if (!queueable(u)) return showNotification("Only songs and episodes can go in the queue.", true); control({ type: "queue", uri: u }); link.value = ""; }, "small") : null,
+          can.play ? button("Play", () => { const u = parse(); if (u) { control({ type: "play", uri: u }); link.value = ""; } }, "small") : null) : null,
+        isHost() ? null : el("div", { class: "spectra-lt-row" },
+          can.skip ? button("Back", () => control({ type: "back" }), "small") : null,
+          can.pause ? button(st.playing ? "Pause" : "Play", () => control({ type: st.playing ? "pause" : "resume" }), "small") : null,
+          can.skip ? button("Skip", () => control({ type: "skip" }), "small") : null));
+    }
+
+    function feed() {
+      const act = ((room && room.activity) || []).slice(0, 5);
+      const hist = ((room && room.history) || []).filter((h, i) => !(i === 0 && room.state && h.uri === room.state.uri)).slice(0, 8);
+      if (!act.length && !hist.length) return null;
+      const ago = (at) => { const s = Math.max(0, (serverNow() - at) / 1000); return s < 60 ? "now" : s < 3600 ? Math.round(s / 60) + "m" : Math.round(s / 3600) + "h"; };
+      const d = el("details", { class: "spectra-lt-more" }, el("summary", {}, "Activity and recently played"),
+        act.length ? el("div", { class: "spectra-lt-list" }, ...act.map((a) => el("div", { class: "spectra-lt-act" }, el("span", {}, a.text), el("span", { class: "sub" }, ago(a.at))))) : null,
+        hist.length ? el("div", { class: "spectra-lt-label" }, "Recently played") : null,
+        hist.length ? el("div", { class: "spectra-lt-list" }, ...hist.map((t) => el("div", { class: "spectra-lt-track" },
+          t.art ? el("img", { src: t.art, alt: "" }) : el("div", { class: "art" }),
+          el("div", { class: "grow" }, el("div", { class: "t" }, t.title || "Unknown"), el("div", { class: "sub" }, [t.artist, t.by && `played by ${t.by}`].filter(Boolean).join(" · "))),
+          canControl() && allowed("play") ? button("Play", () => control({ type: "play", uri: t.uri, title: t.title }), "small") : null))) : null);
+      if (stored("feedOpen") === "1") d.open = true;
+      d.addEventListener("toggle", () => store("feedOpen", d.open ? "1" : ""));
+      return d;
+    }
+
+    function hostSettings() {
+      const pub = room && room.visibility === "public";
+      const p = perms();
+      const check = (key, label) => {
+        const box = el("input", { type: "checkbox" });
+        box.checked = !!p[key];
+        box.addEventListener("change", () => hostAction({ action: "settings", perms: { [key]: box.checked } }));
+        return el("label", { class: "spectra-lt-check" }, box, label);
+      };
+      const nameIn = el("input", { class: "spectra-lt-input", value: (room && room.roomName) || "", maxlength: "40", "aria-label": "Room name", "data-k": "settings-name" });
+      nameIn.addEventListener("change", () => hostAction({ action: "settings", roomName: nameIn.value.trim() }));
+      const seg = (current, options, onPick) => el("div", { class: "spectra-lt-seg" }, ...options.map(([v, label]) =>
+        el("button", { class: current === v ? "on" : "", "aria-pressed": String(current === v), onclick: () => onPick(v) }, label)));
+      const d = el("details", { class: "spectra-lt-more" }, el("summary", {}, "Room settings"),
+        el("label", { class: "spectra-lt-label" }, "Name"), nameIn,
+        el("div", { class: "spectra-lt-label" }, "Who can join"),
+        seg(pub ? "public" : "private", [["public", "Anyone (listed)"], ["private", "People with the code"]], (v) => hostAction({ action: "settings", visibility: v })),
+        el("div", { class: "spectra-lt-label" }, "When you leave"),
+        seg((room && room.onHostLeave) || "end", [["transfer", "Hand it to someone"], ["end", "End the room"]], (v) => hostAction({ action: "settings", onHostLeave: v })),
+        el("div", { class: "spectra-lt-label" }, "DJs can"),
+        el("div", { class: "spectra-lt-checks" }, check("play", "Play songs"), check("queue", "Add to the queue"), check("skip", "Skip"), check("pause", "Pause and play"), check("seek", "Seek")));
+      if (stored("settingsOpen") === "1") d.open = true;
+      d.addEventListener("toggle", () => store("settingsOpen", d.open ? "1" : ""));
+      return d;
     }
 
     function browseView() {
       if (publicRooms === null) { loadPublic(); return [el("p", { class: "spectra-lt-intro" }, "Looking for rooms…")]; }
       const list = publicRooms.map((r) => el("div", { class: "spectra-lt-room" },
-        r.nowPlaying && r.nowPlaying.art ? el("img", { src: r.nowPlaying.art, alt: "" }) : el("div", { class: "art" }, "🎧"),
+        r.nowPlaying && r.nowPlaying.art ? el("img", { src: r.nowPlaying.art, alt: "" }) : el("div", { class: "art" }),
         el("div", { class: "info" },
           el("strong", {}, r.roomName),
-          el("div", { class: "sub" }, `${r.hostName} · ${r.listeners} listening`),
-          r.nowPlaying ? el("div", { class: "sub np" }, `${r.nowPlaying.playing ? "♪" : "❚❚"} ${r.nowPlaying.title}${r.nowPlaying.artist ? " · " + r.nowPlaying.artist : ""}`) : null),
-        button("Join", () => join(r.code, nameVal()), "small accent")));
+          el("div", { class: "sub host" }, avatar({ name: r.hostName, avatar: r.hostAvatar }), `${r.hostName} · ${r.listeners} listening`),
+          r.nowPlaying ? el("div", { class: "sub np" }, `${r.nowPlaying.playing ? "Playing" : "Paused"}: ${r.nowPlaying.title}${r.nowPlaying.artist ? " · " + r.nowPlaying.artist : ""}`) : null),
+        button("Join", () => join(r.code), "small accent")));
       return [
         el("div", { class: "spectra-lt-row between" }, el("div", { class: "spectra-lt-label" }, `Public rooms · ${publicRooms.length}`), button("Refresh", () => { publicRooms = null; render(); }, "small")),
         browseError ? el("p", { class: "spectra-lt-status" }, browseError) : null,
@@ -1857,78 +2380,97 @@
     }
 
     function codeView() {
-      const code = el("input", { class: "spectra-lt-input code", placeholder: "ABC-123", maxlength: "7", autocomplete: "off", spellcheck: "false" });
-      code.addEventListener("keydown", (e) => { if (e.key === "Enter") join(code.value, nameVal()); });
-      setTimeout(() => code.focus(), 0);
+      const code = el("input", { class: "spectra-lt-input code", placeholder: "ABC-123", maxlength: "7", autocomplete: "off", spellcheck: "false", "aria-label": "Room code", "data-k": "code" });
+      code.addEventListener("keydown", (e) => { if (e.key === "Enter") join(code.value); });
+      setTimeout(() => { if (!panelBody || !panelBody.contains(document.activeElement)) code.focus(); }, 0);
       return [
         el("p", { class: "spectra-lt-intro" }, "Private rooms only work with their code. Ask the host for it."),
-        el("div", { class: "spectra-lt-row" }, code, button("Join", () => join(code.value, nameVal()), "primary")),
+        el("div", { class: "spectra-lt-row" }, code, button("Join", () => join(code.value), "primary")),
       ];
     }
 
     function createView() {
-      const roomName = el("input", { class: "spectra-lt-input", placeholder: `${nameVal()}'s room`, maxlength: "40", value: stored("roomName") });
+      const who = (identity && identity.name) || "My";
+      const roomName = el("input", { class: "spectra-lt-input", placeholder: `${who}'s room`, maxlength: "40", value: stored("roomName"), "aria-label": "Room name", "data-k": "room-name" });
       roomName.addEventListener("input", () => store("roomName", roomName.value.trim()));
-      const choice = (value, title, sub) => el("button", {
-        class: "spectra-lt-choice" + (createVisibility === value ? " on" : ""),
-        onclick: () => { createVisibility = value; render(); },
+      const choice = (current, value, title, sub, set) => el("button", {
+        class: "spectra-lt-choice" + (current === value ? " on" : ""), "aria-pressed": String(current === value),
+        onclick: () => { set(value); render(); },
       }, el("strong", {}, title), el("span", {}, sub));
       return [
         el("label", { class: "spectra-lt-label" }, "Room name"), roomName,
         el("div", { class: "spectra-lt-label" }, "Who can join"),
         el("div", { class: "spectra-lt-row" },
-          choice("public", "🌐 Public", "Listed in Browse rooms. Anyone can join."),
-          choice("private", "🔒 Private", "Hidden. Only people with the code.")),
-        el("div", { class: "spectra-lt-row" }, button("Create room", () => create(nameVal(), roomName.value.trim(), createVisibility), "primary")),
+          choice(createVisibility, "public", "Public", "Listed in Browse rooms. Anyone can join.", (v) => (createVisibility = v)),
+          choice(createVisibility, "private", "Private", "Hidden. Only people with the code.", (v) => (createVisibility = v))),
+        el("div", { class: "spectra-lt-label" }, "When you leave"),
+        el("div", { class: "spectra-lt-row" },
+          choice(createOnLeave, "transfer", "Keep it going", "A DJ, or whoever's been here longest, takes over.", (v) => (createOnLeave = v)),
+          choice(createOnLeave, "end", "End the room", "Everyone stops listening together.", (v) => (createOnLeave = v))),
+        el("p", { class: "spectra-lt-hint" }, "Then just use Spotify like you always do. Whatever you play, everyone in the room hears too."),
+        el("div", { class: "spectra-lt-row" }, button("Create room", () => create(roomName.value.trim(), createVisibility, createOnLeave), "primary")),
       ];
     }
 
     function render() {
       if (togetherButton) togetherButton.active = !!session;
       pill();
-      if (!panelBody || !panelBody.isConnected) { panelBody = null; return; }
+      if (!panelBody || !panelBody.isConnected) { panelBody = null; clearInterval(barTimer); barTimer = null; return; }
       const parts = [];
       if (!session) {
         const tabs = [["browse", "Browse rooms"], ["code", "Join with code"], ["create", "Create a room"]];
         parts.push(
           el("p", { class: "spectra-lt-intro" }, "Listen to the same music at the same time as your friends. Everyone hears it on their own Spotify; Spectra keeps you in sync."),
-          el("label", { class: "spectra-lt-label" }, "Your name"), nameField(),
-          el("div", { class: "spectra-lt-tabs" }, ...tabs.map(([k, label]) => el("button", { class: "spectra-lt-tab" + (tab === k ? " on" : ""), onclick: () => { tab = k; status = ""; render(); } }, label))),
+          identityRow(),
+          el("div", { class: "spectra-lt-tabs", role: "tablist" }, ...tabs.map(([k, label]) => el("button", { class: "spectra-lt-tab" + (tab === k ? " on" : ""), role: "tab", "aria-selected": String(tab === k), onclick: () => { tab = k; status = ""; render(); } }, label))),
           ...(tab === "browse" ? browseView() : tab === "code" ? codeView() : createView()));
-      } else if (isHost()) {
-        const copy = button("Copy code", async () => {
-          try { await navigator.clipboard.writeText(prettyCode(session.code)); copy.textContent = "Copied"; } catch { copy.textContent = "Select and copy it"; }
-          setTimeout(() => (copy.textContent = "Copy code"), 1500);
-        }, "small");
+      } else {
+        const copy = button(prettyCode(session.code), async () => {
+          try { await navigator.clipboard.writeText(prettyCode(session.code)); copy.textContent = "Copied"; } catch { copy.textContent = "Select it to copy"; }
+          setTimeout(() => (copy.textContent = prettyCode(session.code)), 1500);
+        }, "small code", "Copy the room code");
         const pub = room && room.visibility === "public";
         parts.push(
-          el("div", { class: "spectra-lt-row between" },
-            el("div", {}, el("div", { class: "spectra-lt-title" }, (room && room.roomName) || "Your room"),
-              el("div", { class: "sub" }, pub ? "🌐 Public: listed in Browse rooms" : "🔒 Private: only people with the code")),
-            button(pub ? "Make private" : "Make public", () => hostAction({ action: "settings", visibility: pub ? "private" : "public" }), "small")),
-          el("div", { class: "spectra-lt-row" }, el("div", { class: "spectra-lt-code" }, prettyCode(session.code)), copy),
-          nowPlaying(), memberRows(),
-          el("p", { class: "spectra-lt-hint" }, "Make someone a DJ to let them add songs to the queue, play playlists, skip and pause. Everything they do happens on your Spotify, so everyone hears it."),
-          djPanel(),
-          el("div", { class: "spectra-lt-row end" }, button("End room", leave, "danger")));
-      } else {
-        parts.push(
-          el("div", { class: "spectra-lt-title" }, (room && room.roomName) || `Room ${prettyCode(session.code)}`),
-          el("p", { class: "spectra-lt-intro" }, `Hosted by ${(room && room.hostName) || "the host"} · code ${prettyCode(session.code)}` + (room && room.hostAway ? " · the host seems to be away" : "")),
-          nowPlaying(), memberRows(),
-          me && me.dj ? djPanel() : null,
-          el("div", { class: "spectra-lt-row end" }, button("Sync now", () => follow(true)), button("Leave", leave, "danger")));
+          el("div", { class: "spectra-lt-head" },
+            el("div", { class: "grow" },
+              el("div", { class: "spectra-lt-title" }, (room && room.roomName) || `Room ${prettyCode(session.code)}`),
+              el("div", { class: "sub" }, connBadge(),
+                isHost() ? (pub ? " · Public" : " · Private") : ` · Hosted by ${(room && room.hostName) || "the host"}`,
+                room && room.hostAway && !isHost() ? " · host seems away" : "")),
+            copy),
+          nowPlaying(),
+          detached && !isHost() ? el("div", { class: "spectra-lt-note" }, el("span", {}, "You're playing something else. You'll rejoin when the room's song changes."), button("Rejoin now", () => follow(true), "small")) : null,
+          upNext(), memberRows(),
+          canControl() ? djPanel() : null,
+          feed(),
+          isHost() ? hostSettings() : null,
+          el("div", { class: "spectra-lt-row end" },
+            isHost() ? null : button("Sync now", () => follow(true), "small"),
+            isHost() && room && room.onHostLeave === "transfer" ? button("End for everyone", () => leave(true), "small danger") : null,
+            button(isHost() ? (room && room.onHostLeave === "transfer" ? "Leave and hand over" : "End room") : "Leave", () => leave(false), isHost() && !(room && room.onHostLeave === "transfer") ? "danger" : "")));
       }
       if (status) parts.push(el("p", { class: "spectra-lt-status" }, status));
+      // Keep what the person was typing, and where they'd scrolled, across re-renders.
+      const a = document.activeElement;
+      const keep = a && panelBody.contains(a) && a.dataset && a.dataset.k ? { k: a.dataset.k, v: a.value, s: a.selectionStart, e: a.selectionEnd } : null;
+      const scroller = panelBody.closest(".spectra-modal-body");
+      const top = scroller ? scroller.scrollTop : 0;
       panelBody.replaceChildren(...parts.filter(Boolean));
+      if (keep) {
+        const n = panelBody.querySelector(`[data-k="${keep.k}"]`);
+        if (n) { n.value = keep.v; n.focus(); try { n.setSelectionRange(keep.s, keep.e); } catch {} }
+      }
+      if (scroller) scroller.scrollTop = top;
+      if (!barTimer) barTimer = setInterval(tickBar, 500);
     }
 
     async function open() {
       const body = el("div", { class: "spectra-lt" });
-      body.dataset.name = await defaultName();
       panelBody = body;
       if (!session) { publicRooms = null; status = ""; }
       PopupModal.display({ title: "Listen Together", content: body, isLarge: false });
+      render();
+      identity = await spotifyProfile();
       render();
     }
 
@@ -1942,7 +2484,9 @@
       }
       const n = room && room.members ? room.members.length : 1;
       const role = isHost() ? "Hosting" : me && me.dj ? "DJ" : "Listening together";
-      p.textContent = `🎧 ${role} · ${(room && room.roomName) || prettyCode(session.code)} · ${n}`;
+      p.className = conn;
+      p.replaceChildren(el("i"), `${role} · ${(room && room.roomName) || prettyCode(session.code)} · ${n}`);
+      p.title = `Listen Together: ${(CONN[conn] || CONN.offline)[1]}`;
     }
 
     /** Its own button in Spotify's top bar, lit up while you're in a room. */
@@ -2056,6 +2600,7 @@
 
   window.__spectra = {
     version: VERSION, apply, isDesktop, state, recolorCSS, mapThemeCSS,
+    openListenTogether: () => Together.open(),
     // Diagnostics only: which Spotify credentials have been seen (never the values).
     authStatus: () => ({
       token: !!accessToken(),
