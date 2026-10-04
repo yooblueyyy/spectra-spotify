@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Spectra: Spotify Themes & Extensions",
   "short_name": "Spectra",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Spicetify themes, extensions and snippets for the Spotify web player. A standalone Spectra desktop app is available for the Spotify desktop client.",
   "icons": {
     "16": "icons/icon-16.png",

@@ -1,0 +1,17 @@
+{
+  "name": "spectra-discord-bot",
+  "private": true,
+  "type": "module",
+  "description": "Spectra community server bot: /setupserver and moderation.",
+  "scripts": {
+    "deploy": "node src/deploy-commands.js",
+    "start": "node src/index.js"
+  },
+  "engines": {
+    "node": ">=20.12"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^1.0.10",
+    "discord.js": "^14.27.0"
+  }
+}

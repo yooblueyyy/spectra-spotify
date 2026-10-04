@@ -1,0 +1,7 @@
+{
+  "name": "spectra-site",
+  "private": true,
+  "type": "module",
+  "description": "Spectra website and update API (Vercel).",
+  "engines": { "node": ">=18" }
+}
