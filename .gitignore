@@ -1,0 +1,37 @@
+*.pem
+admin-token.txt
+desktop-app/build/
+desktop-app/release/
+desktop-app/ui/
+discord-bot/.env
+discord-bot/data/
+discord-bot/node_modules/
+dist/
+extension.pem
+node_modules/
+website/.env*
+website/.vercel
+
+# secrets: never commit
+*.jks
+*.keystore
+keystore.properties
+local.properties
+.env
+.env.*
+!.env.example
+*.crx
+amo-keys.json
+
+# build output
+android-app/build/
+android-app/app/build/
+android-app/.gradle/
+android-app/release/
+android-app/app/src/main/assets/
+extension.zip
+desktop-app/node_modules/
+
+# Discord bot hosting bundle (its .env gets the bot token on the host)
+discord-bot-hosting/
+spectra-bot-hosting.zip

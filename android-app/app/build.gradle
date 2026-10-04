@@ -1,0 +1,44 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Release signing: android-app/keystore.properties (not committed). Falls back to the debug key.
+def ksProps = new Properties()
+def ksFile = rootProject.file('keystore.properties')
+if (ksFile.exists()) ksFile.withInputStream { ksProps.load(it) }
+
+android {
+    namespace 'app.spectra.android'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'app.spectra.android'
+        minSdk 26
+        targetSdk 35
+        versionCode 12
+        versionName '1.6.2'
+    }
+
+    signingConfigs {
+        release {
+            if (ksFile.exists()) {
+                storeFile rootProject.file(ksProps['storeFile'])
+                storePassword ksProps['storePassword']
+                keyAlias ksProps['keyAlias']
+                keyPassword ksProps['keyPassword']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig ksFile.exists() ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

@@ -1,0 +1,9 @@
+.gradle/
+build/
+app/build/
+local.properties
+keystore.properties
+*.jks
+app/src/main/assets/
+app/src/main/res/mipmap-*/
+release/

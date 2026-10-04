@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="themes"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/shortcut_themes"
+        android:shortcutLongLabel="@string/shortcut_themes_long">
+        <intent
+            android:action="app.spectra.android.OPEN_DASHBOARD"
+            android:targetPackage="app.spectra.android"
+            android:targetClass="app.spectra.android.MainActivity" />
+    </shortcut>
+</shortcuts>

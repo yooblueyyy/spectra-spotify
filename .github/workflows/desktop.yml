@@ -1,0 +1,63 @@
+# Builds the Spectra desktop app for macOS (Intel + Apple Silicon) and Linux.
+# macOS builds can only be made on a Mac, so they run on GitHub's macOS machines.
+#
+# Run it from the Actions tab ("Run workflow"), or push a tag like desktop-v1.2.0.
+# With a tag, the files are also attached to that release in yooblueyyy/spectra-releases
+# (needs a RELEASES_TOKEN secret: a fine-grained token with Contents: read & write on that repo).
+name: Desktop builds
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["desktop-v*"]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            target: mac
+          - os: ubuntu-latest
+            target: linux
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: desktop-app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop-app/package-lock.json
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run dist:${{ matrix.target }}
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spectra-${{ matrix.target }}
+          path: |
+            desktop-app/release/*.dmg
+            desktop-app/release/*.AppImage
+            desktop-app/release/*.deb
+          if-no-files-found: error
+
+      - name: Attach to the release
+        if: startsWith(github.ref, 'refs/tags/desktop-v')
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+        shell: bash
+        run: |
+          tag="v${GITHUB_REF_NAME#desktop-v}"
+          files=$(ls release/*.dmg release/*.AppImage release/*.deb 2>/dev/null || true)
+          gh release view "$tag" --repo yooblueyyy/spectra-releases >/dev/null 2>&1 \
+            || gh release create "$tag" --repo yooblueyyy/spectra-releases --title "Spectra $tag" --notes "Spectra desktop $tag"
+          gh release upload "$tag" $files --repo yooblueyyy/spectra-releases --clobber

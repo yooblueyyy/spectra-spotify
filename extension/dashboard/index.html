@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spectra</title>
+  <link rel="icon" href="../icons/icon-32.png">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <div class="app-drag" data-app-only></div>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="../icons/icon-48.png" alt="" width="32" height="32">
+        <div>
+          <div class="brand-name">Spectra</div>
+          <div class="brand-sub">Spotify, your way</div>
+        </div>
+      </div>
+
+      <nav class="nav" id="nav">
+        <button data-view="themes" class="active"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0 0 18c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3-4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>Themes</button>
+        <button data-view="colors"><svg viewBox="0 0 24 24"><path d="M12 2.7 6.3 8.4a8 8 0 1 0 11.4 0zM12 19a5 5 0 0 1-5-5c0-1.3.5-2.6 1.5-3.5L12 7l3.5 3.5A5 5 0 0 1 12 19z"/></svg>Colors</button>
+        <button data-view="extensions"><svg viewBox="0 0 24 24"><path d="M20.5 11H19V7a2 2 0 0 0-2-2h-4V3.5a2.5 2.5 0 0 0-5 0V5H4a2 2 0 0 0-2 2v3.8h1.5a2.7 2.7 0 0 1 0 5.4H2V20a2 2 0 0 0 2 2h3.8v-1.5a2.7 2.7 0 0 1 5.4 0V22H17a2 2 0 0 0 2-2v-4h1.5a2.5 2.5 0 0 0 0-5z"/></svg>Extensions</button>
+        <button data-view="snippets"><svg viewBox="0 0 24 24"><path d="M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6z"/></svg>Snippets</button>
+        <button data-view="css"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"/></svg>Custom CSS</button>
+        <div class="nav-sep"></div>
+        <button data-view="spotify" data-app-only data-desktop-only><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.6 14.4a.62.62 0 0 1-.86.2c-2.35-1.43-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.22c3.81-.87 7.09-.5 9.72 1.12.3.18.39.57.21.86zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.63-1.1 8.15-.57 11.24 1.33.37.23.48.71.25 1.07zm.1-2.83C14.7 8.94 9.38 8.76 6.3 9.7a.94.94 0 1 1-.54-1.8c3.53-1.07 9.4-.86 13.12 1.34a.94.94 0 0 1-.96 1.61z"/></svg>Spotify<span class="dot" id="spotify-dot"></span></button>
+        <button data-view="settings"><svg viewBox="0 0 24 24"><path d="M19.14 12.94a7.07 7.07 0 0 0 0-1.88l2.03-1.58a.5.5 0 0 0 .12-.61l-1.92-3.32a.5.5 0 0 0-.59-.22l-2.39.96a7 7 0 0 0-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84a.48.48 0 0 0-.48.41l-.36 2.54a7.4 7.4 0 0 0-1.62.94l-2.39-.96a.48.48 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58a7.4 7.4 0 0 0 0 1.88l-2.03 1.58a.5.5 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54a7 7 0 0 0 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61zM12 15.6a3.6 3.6 0 1 1 0-7.2 3.6 3.6 0 0 1 0 7.2z"/></svg>Settings</button>
+      </nav>
+
+      <div class="sidebar-foot">
+        <label class="master">
+          <span>
+            <strong>Spectra is <span id="master-label">on</span></strong>
+            <small>Master switch for all mods</small>
+          </span>
+          <input type="checkbox" id="master" class="switch" checked>
+        </label>
+        <button class="btn ghost wide" id="reload-tabs"><svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.96 7.96 0 0 0 12 4a8 8 0 1 0 7.73 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z"/></svg><span data-ext-only>Reload Spotify tabs</span><span data-app-only>Reload Spotify</span></button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div id="perm-banner" class="banner" hidden>
+        <div><strong>Spectra needs permission for open.spotify.com</strong><br><small>Firefox asks for site access separately. Without it, nothing can be applied.</small></div>
+        <button class="btn primary" id="grant-perms">Grant access</button>
+      </div>
+      <div id="welcome" class="banner welcome" hidden>
+        <div><strong>Welcome to Spectra 👋</strong><br><small><span data-ext-only>Pick a theme below, then open <a href="https://open.spotify.com" target="_blank" rel="noopener">open.spotify.com</a>.</span><span data-app-only>Pick a theme below and watch Spotify change.</span> Changes apply live, so there's nothing to reload.</small></div>
+        <button class="btn ghost" id="dismiss-welcome">Got it</button>
+      </div>
+
+      <div id="remote-banner" class="banner info" hidden>
+        <div id="remote-banner-text"></div>
+        <div class="row-gap"><a id="remote-banner-link" class="btn ghost small" target="_blank" rel="noopener" hidden>Details</a><button class="btn ghost small" id="remote-banner-close">Dismiss</button></div>
+      </div>
+      <div id="update-banner" class="banner info" hidden>
+        <div id="update-banner-text"></div>
+        <a id="update-banner-link" class="btn primary small" target="_blank" rel="noopener">Get the update</a>
+      </div>
+
+      <section class="view active" data-view="themes">
+        <header class="view-head">
+          <div>
+            <h1>Themes</h1>
+            <p>Every theme from the Spicetify marketplace, applied live <span data-ext-only>to the web player</span><span data-app-only>to Spotify</span>.</p>
+          </div>
+          <div class="search"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19zm-6 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/></svg><input id="theme-search" placeholder="Search themes" autocomplete="off"></div>
+        </header>
+        <div id="current-theme"></div>
+        <div id="featured-themes-wrap" hidden>
+          <div class="section-head"><h2>Featured</h2><span class="muted">Picked by Spectra</span></div>
+          <div class="grid" id="featured-themes"></div>
+        </div>
+        <div class="section-head"><h2>Official</h2><span class="muted" id="official-count"></span></div>
+        <div class="grid" id="official-themes"></div>
+        <div class="section-head"><h2>Community</h2><span class="muted" id="community-count"></span></div>
+        <div class="grid" id="community-themes"></div>
+        <div class="more"><button class="btn ghost" id="more-themes">Load more</button></div>
+      </section>
+
+      <section class="view" data-view="colors">
+        <header class="view-head">
+          <div>
+            <h1>Colors</h1>
+            <p>Pick a colour scheme or fine-tune every colour. The preview updates as you drag.</p>
+          </div>
+          <button class="btn ghost" id="reset-colors">Reset tweaks</button>
+        </header>
+        <div class="colors-layout">
+          <div>
+            <div class="card-block">
+              <h3>Scheme</h3>
+              <div id="scheme-list" class="scheme-list"></div>
+            </div>
+            <div class="card-block">
+              <h3>Palette</h3>
+              <div id="palette" class="palette"></div>
+            </div>
+          </div>
+          <div class="preview-wrap">
+            <div class="mock" id="mock">
+              <div class="mock-side">
+                <div class="mock-logo"></div>
+                <div class="mock-nav on"></div><div class="mock-nav"></div><div class="mock-nav"></div>
+                <div class="mock-lib"><div></div><div></div><div></div><div></div></div>
+              </div>
+              <div class="mock-main">
+                <div class="mock-hero"><div class="mock-art"></div><div><div class="mock-h1">Good evening</div><div class="mock-sub">Made for you · 50 songs</div><div class="mock-play"></div></div></div>
+                <div class="mock-cards"><div class="mock-card"><i></i><b></b><s></s></div><div class="mock-card"><i></i><b></b><s></s></div><div class="mock-card"><i></i><b></b><s></s></div></div>
+                <div class="mock-row sel"><span>1</span><b>Selected song</b><s>3:24</s></div>
+                <div class="mock-row"><span>2</span><b>Another track</b><s>4:02</s></div>
+              </div>
+              <div class="mock-player"><div class="mock-np"><i></i><div><b>Now playing</b><s>Artist</s></div></div><div class="mock-ctrl"><span></span><em></em><span></span><div class="mock-bar"><div></div></div></div><div class="mock-vol"><div></div></div></div>
+            </div>
+            <p class="muted small center">Live preview of your palette</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" data-view="extensions">
+        <header class="view-head">
+          <div>
+            <h1>Extensions</h1>
+            <p>Run Spicetify extensions in your browser. Each one is sandboxed so a crash won't take down the others.</p>
+          </div>
+          <div class="search"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19zm-6 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/></svg><input id="ext-search" placeholder="Search extensions" autocomplete="off"></div>
+        </header>
+        <div class="section-head"><h2>Installed</h2><div class="row-gap"><button class="btn ghost small" id="update-exts">Check for updates</button><button class="btn ghost small" id="add-ext">Add from URL or code</button></div></div>
+        <div id="installed-exts" class="list"></div>
+        <div id="featured-exts-wrap" hidden>
+          <div class="section-head"><h2>Featured</h2><span class="muted">Picked by Spectra</span></div>
+          <div class="grid" id="featured-exts"></div>
+        </div>
+        <div class="section-head"><h2>Marketplace</h2><span class="muted" id="ext-count"></span></div>
+        <div class="grid" id="market-exts"></div>
+        <div class="more"><button class="btn ghost" id="more-exts">Load more</button></div>
+      </section>
+
+      <section class="view" data-view="snippets">
+        <header class="view-head">
+          <div>
+            <h1>Snippets</h1>
+            <p>Small CSS tweaks you can stack on any theme.</p>
+          </div>
+          <div class="search"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19zm-6 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/></svg><input id="snippet-search" placeholder="Search snippets" autocomplete="off"></div>
+        </header>
+        <div class="section-head"><h2>Your snippets</h2><button class="btn ghost small" id="add-snippet">New snippet</button></div>
+        <div id="my-snippets" class="list"></div>
+        <div id="featured-snippets-wrap" hidden>
+          <div class="section-head"><h2>Featured</h2><span class="muted">Picked by Spectra</span></div>
+          <div class="grid" id="featured-snippets"></div>
+        </div>
+        <div class="section-head"><h2>Marketplace</h2><span class="muted" id="snippet-count"></span></div>
+        <div class="grid" id="market-snippets"></div>
+      </section>
+
+      <section class="view" data-view="css">
+        <header class="view-head">
+          <div>
+            <h1>Custom CSS</h1>
+            <p>Loaded last, after the theme and snippets. Spicetify class names like <code>.main-nowPlayingBar-container</code> work here too.</p>
+          </div>
+          <span class="muted" id="css-status">Saved</span>
+        </header>
+        <div class="editor">
+          <textarea id="custom-css" spellcheck="false" placeholder="/* e.g. */&#10;.main-nowPlayingBar-container { border-top: 1px solid var(--spice-button); }"></textarea>
+        </div>
+      </section>
+
+      <section class="view" data-view="spotify" data-app-only data-desktop-only>
+        <header class="view-head">
+          <div>
+            <h1>Spotify</h1>
+            <p>Spectra attaches to the Spotify desktop app while it runs. Spotify's files are never modified, so Spotify updates can't break anything.</p>
+          </div>
+        </header>
+        <div class="spotify-card">
+          <div class="spotify-art" id="spotify-art"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.6 14.4a.62.62 0 0 1-.86.2c-2.35-1.43-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.22c3.81-.87 7.09-.5 9.72 1.12.3.18.39.57.21.86zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.63-1.1 8.15-.57 11.24 1.33.37.23.48.71.25 1.07zm.1-2.83C14.7 8.94 9.38 8.76 6.3 9.7a.94.94 0 1 1-.54-1.8c3.53-1.07 9.4-.86 13.12 1.34a.94.94 0 0 1-.96 1.61z"/></svg></div>
+          <div class="grow">
+            <div class="status-pill" id="spotify-pill"><span></span>Checking…</div>
+            <h2 id="spotify-title">Looking for Spotify…</h2>
+            <p class="muted" id="spotify-detail"></p>
+            <div class="row-gap wrap">
+              <button class="btn primary" id="spotify-start">Start Spotify</button>
+              <button class="btn ghost" id="spotify-reload" hidden>Reload Spotify</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings" style="margin-top:18px">
+          <label class="setting"><div><strong>Always open Spotify with Spectra</strong><small id="always-help">Spotify's Start Menu, desktop and taskbar shortcuts, its "open at login" setting and spotify: links all start it with Spectra attached. If Spotify still opens some other way, Spectra reopens it within a few seconds. Turning this off restores everything exactly as it was.</small></div><input type="checkbox" class="switch" data-app-opt="alwaysWithSpectra"></label>
+          <label class="setting"><div><strong id="login-start-label">Start Spectra with Windows</strong><small>Runs quietly in the tray so it's ready whenever you open Spotify.</small></div><input type="checkbox" class="switch" data-app-opt="startWithWindows"></label>
+          <label class="setting"><div><strong>Show Spectra on Discord</strong><small>Your Discord profile shows that you're using Spectra, with your current theme, while the Discord app is open.</small></div><input type="checkbox" class="switch" data-app-opt="discordPresence"></label>
+          <label class="setting"><div><strong>Open Spotify when I open Spectra</strong><small>Opening the Spectra window also starts Spotify, or connects to it if it's already open.</small></div><input type="checkbox" class="switch" data-app-opt="autoLaunch"></label>
+          <label class="setting"><div><strong id="tray-label">Keep running in the tray</strong><small id="tray-help">Closing the window keeps Spectra in the system tray, so your theme and extensions stay active. Quit from the tray icon.</small></div><input type="checkbox" class="switch" data-app-opt="closeToTray"></label>
+          <div class="setting"><div><strong>Spotify location</strong><small id="spotify-path-hint">Leave empty to detect it automatically.</small></div><input id="spotify-path" class="input mono" placeholder="Auto-detect" spellcheck="false"></div>
+        </div>
+      </section>
+
+      <section class="view" data-view="settings">
+        <header class="view-head"><div><h1>Settings</h1><p>Compatibility and data.</p></div></header>
+        <div class="settings">
+          <label class="setting"><div><strong>Recolor Spotify's own styles</strong><small>Rewrites Spotify's built-in colours into theme variables, the same way Spicetify does when it installs. Turn this off if a theme only uses its own CSS.</small></div><input type="checkbox" class="switch" data-opt="recolorSpotify"></label>
+          <label class="setting"><div><strong>Spicetify class names</strong><small>Lets themes, snippets and extensions use readable class names like <code>.main-topBar-container</code>.</small></div><input type="checkbox" class="switch" data-opt="classCompat"></label>
+          <label class="setting"><div><strong>Spicetify API for extensions</strong><small>Provides <code>window.Spicetify</code> (Player, Platform, React, Topbar, ContextMenu, PopupModal…).</small></div><input type="checkbox" class="switch" data-opt="shim"></label>
+          <label class="setting"><div><strong>Spectra button in Spotify</strong><small>Adds a button to the top bar that opens extension menus and this dashboard.</small></div><input type="checkbox" class="switch" data-opt="topbarButton"></label>
+          <div class="setting"><div><strong>GitHub token (optional)</strong><small>Without a token, GitHub allows about 10 marketplace searches a minute. A token with no scopes raises that limit. It's stored only in this browser.</small></div><input id="gh-token" class="input mono" type="password" placeholder="ghp_…" autocomplete="off"></div>
+          <div class="setting"><div><strong>Update server</strong><small id="remote-status">Featured picks, fixes and announcements come from here.</small></div><div class="row-gap wrap" style="margin:0"><input id="update-server" class="input mono" placeholder="Default" spellcheck="false"><button class="btn ghost" id="remote-check">Check now</button></div></div>
+          <div class="setting"><div><strong>Backup</strong><small>Export or import every theme, extension, snippet and setting.</small></div><div class="row-gap"><button class="btn ghost" id="export">Export</button><button class="btn ghost" id="import">Import</button><input type="file" id="import-file" accept="application/json" hidden></div></div>
+          <div class="setting"><div><strong>Caches</strong><small>Re-download the class-name map and clear cached marketplace listings.</small></div><button class="btn ghost" id="clear-cache">Refresh</button></div>
+          <div class="setting danger"><div><strong>Reset everything</strong><small>Removes all themes, extensions, snippets and settings.</small></div><button class="btn danger" id="reset-all">Reset</button></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="drawer" class="drawer" hidden>
+    <div class="drawer-box">
+      <button class="icon-btn drawer-close" id="drawer-close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+      <div id="drawer-content"></div>
+    </div>
+  </div>
+  <div id="toasts"></div>
+
+  <script src="../shared/core.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

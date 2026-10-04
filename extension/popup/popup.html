@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Spectra</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; width: 320px; background: #0b0b0f; color: #f4f4f6; font: 13px/1.45 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif; }
+    header { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: linear-gradient(135deg, rgba(139,92,246,.22), rgba(34,211,166,.1)); border-bottom: 1px solid rgba(255,255,255,.07); }
+    header img { border-radius: 8px; }
+    header b { font-size: 16px; letter-spacing: -.02em; }
+    header small { display: block; color: #a1a1ad; font-size: 11px; }
+    .switch { appearance: none; width: 40px; height: 22px; border-radius: 999px; background: #3a3a46; position: relative; cursor: pointer; transition: background .2s; margin: 0 0 0 auto; flex: none; }
+    .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s; }
+    .switch:checked { background: #22d3a6; }
+    .switch:checked::after { transform: translateX(18px); }
+    main { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+    .theme { display: flex; gap: 12px; align-items: center; padding: 10px; border-radius: 12px; background: #16161d; border: 1px solid rgba(255,255,255,.07); }
+    .theme .art { width: 56px; height: 40px; border-radius: 6px; background: linear-gradient(135deg, #8b5cf6, #22d3a6); object-fit: cover; flex: none; }
+    .theme .name { font-weight: 700; }
+    .theme .sub { color: #a1a1ad; font-size: 12px; }
+    label.k { color: #a1a1ad; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+    .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip { all: unset; cursor: pointer; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); font-size: 12px; font-weight: 600; }
+    .chip.on { border-color: #22d3a6; background: rgba(34,211,166,.14); }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .stat { background: #16161d; border: 1px solid rgba(255,255,255,.07); border-radius: 10px; padding: 8px; text-align: center; }
+    .stat b { display: block; font-size: 18px; }
+    .stat span { color: #a1a1ad; font-size: 11px; }
+    .row { display: flex; gap: 8px; }
+    button.btn { all: unset; flex: 1; text-align: center; cursor: pointer; padding: 9px 12px; border-radius: 999px; font-weight: 700; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); }
+    button.btn:hover { background: rgba(255,255,255,.12); }
+    button.btn.primary { background: linear-gradient(135deg, #8b5cf6, #22d3a6); color: #0b0b0f; border: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../icons/icon-32.png" width="28" height="28" alt="">
+    <div><b>Spectra</b><small id="status">Active on open.spotify.com</small></div>
+    <input type="checkbox" class="switch" id="master" title="Turn Spectra on or off">
+  </header>
+  <main>
+    <div class="theme">
+      <img class="art" id="art" alt="" referrerpolicy="no-referrer">
+      <div><div class="name" id="theme-name">Spotify default</div><div class="sub" id="theme-sub">No theme applied</div></div>
+    </div>
+    <div id="schemes-wrap" hidden><label class="k">Color scheme</label><div class="chips" id="schemes"></div></div>
+    <div class="stats">
+      <div class="stat"><b id="n-ext">0</b><span>extensions</span></div>
+      <div class="stat"><b id="n-snip">0</b><span>snippets</span></div>
+      <div class="stat"><b id="n-css">0</b><span>CSS lines</span></div>
+    </div>
+    <div class="row">
+      <button class="btn primary" id="open">Open dashboard</button>
+      <button class="btn" id="spotify">Open Spotify</button>
+    </div>
+  </main>
+  <script src="../shared/core.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

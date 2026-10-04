@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Spectra</string>
+    <string name="shortcut_themes">Themes</string>
+    <string name="shortcut_themes_long">Spectra themes &amp; extensions</string>
+    <string name="channel_playback">Playback</string>
+    <string name="open_spectra">Spectra</string>
+</resources>
